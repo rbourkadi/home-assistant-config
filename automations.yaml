@@ -1,0 +1,250 @@
+---
+- id: '1697816443804'
+  alias: Turn off Living Room Sky Q Box and Chromecast when TV is turned off
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 7639e466da454a2ebb961fb7a841407d
+    domain: media_player
+    entity_id: media_player.living_room_tv
+    type: turned_off
+  action:
+  - service: media_player.turn_off
+    target:
+      device_id: 2571b4e503bb55c93820af4922fdf88a
+    data: {}
+  - service: media_player.turn_off
+    data: {}
+    target:
+      device_id: 2a84fbc16d8f5b517f8a643940ec5992
+  mode: single
+- id: '1688463054311'
+  alias: Spare Room Lights Power Toggle
+  description: ''
+  trigger:
+  - device_id: 1aed74a8a5440230a05c4a9fe0e6b221
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.spare_room_lights
+  mode: single
+- id: '1628514015651'
+  alias: Notification - Washing Machine Finished
+  description: ''
+  use_blueprint:
+    path: Sbyx/notify-or-do-something-when-an-appliance-like-a-dishwasher-or-washing-machine-finishes.yaml
+    input:
+      actions:
+      - if:
+        - condition: device
+          device_id: 11f8e78729894007a306b1fac55ad6b2
+          domain: device_tracker
+          entity_id: device_tracker.ron_s_phone
+          type: is_home
+        then:
+        - service: notify.mobile_app_ron_s_phone
+          data:
+            message: Washing Machine has finished!
+            data:
+              persistent: true
+              tag: washing
+              actions:
+              - action: MACHINE_EMPTIED
+                title: It's done
+      - service: notify.ron_pc
+        data:
+          message: The Washing Machine is finished
+          title: Washing Machine
+      - if:
+        - condition: or
+          conditions:
+          - condition: time
+            weekday:
+            - sat
+            - sun
+            after: 09:00:00
+          - condition: time
+            after: '18:00:00'
+            before: '22:00:00'
+            weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+        then:
+        - service: notify.alexa_media
+          data:
+            message: The washing machine is finished
+            data:
+              type: announce
+            target:
+            - media_player.spare_room_echo_dot
+        else:
+        - service: notify.ron_pc
+          data:
+            message: Notification Out-of-Hours
+            title: Washing Machine
+      power_sensor: sensor.washingmachine_consumption
+      finishing_threshold: 2
+      starting_threshold: 3
+      finishing_hysteresis: 2
+      starting_hysteresis: 2
+- id: '1657375565025'
+  alias: Notification - Washing Machine emptied action
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: MACHINE_EMPTIED
+  condition: []
+  action:
+  - service: notify.mobile_app_ron_s_phone
+    data:
+      message: clear_notification
+      data:
+        tag: washing
+  mode: single
+- id: '1657376733084'
+  alias: Set - Washing Machine Status
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washingmachine_consumption
+    id: stopped
+    for:
+      minutes: 1
+    below: 2
+  - platform: numeric_state
+    entity_id: sensor.washingmachine_consumption
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    above: 2
+    id: running
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: stopped
+      sequence:
+      - service: input_select.select_option
+        data:
+          option: Stopped
+        target:
+          entity_id: input_select.washing_machine_status
+    - conditions:
+      - condition: trigger
+        id: running
+      sequence:
+      - service: input_select.select_option
+        data:
+          option: Running
+        target:
+          entity_id: input_select.washing_machine_status
+  mode: single
+- id: '1659196540190'
+  alias: Notification - Notify Ronnie if he leaves home and computer is on
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 11f8e78729894007a306b1fac55ad6b2
+    domain: device_tracker
+    entity_id: device_tracker.ron_s_phone
+    type: leaves
+    zone: zone.home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.ron_s_computer_connected
+    state: 'on'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.ron_s_phone_wifi_connection
+      state: SKYVSUIY
+  action:
+  - service: notify.mobile_app_ron_s_phone
+    data:
+      message: You've left your computer on!
+      data:
+        actions:
+        - action: shutdown_computer
+          title: Shutdown Computer
+  - wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: shutdown_computer
+    timeout:
+      minutes: 5
+    continue_on_timeout: false
+  - service: button.press
+    data: {}
+    target:
+      entity_id: button.ron_pc_shutdown
+  mode: single
+- id: '1667125929662'
+  alias: Scales Battery Alert
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.aria_air_battery
+    to: Low
+  condition: []
+  action:
+  - service: notify.mobile_app_ron_s_phone
+    data:
+      message: Aria Air Scale Battery Low
+  mode: single
+- id: '1667139929911'
+  alias: ZHA - IKEA five button remote for lights
+  description: ''
+  use_blueprint:
+    path: frenck/zha-ikea-five-button-remote-for-lights.yaml
+    input:
+      remote: 1aed74a8a5440230a05c4a9fe0e6b221
+      light:
+        device_id:
+        - 8f96d344db3a3eb75be917030e7e6b7f
+        - 84d0e4e8d2f709fc47aac493372ab203
+- id: '1673811020587'
+  alias: Turn off Living Room Echo Show Display when TV gets turned on
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 7639e466da454a2ebb961fb7a841407d
+    domain: media_player
+    entity_id: media_player.living_room_tv
+    type: turned_on
+  condition: []
+  action:
+  - service: media_player.play_media
+    data:
+      media_content_type: custom
+      media_content_id: turn off the display
+    target:
+      entity_id: media_player.livingroom_echoshow
+  mode: single
+- id: '1681073771744'
+  alias: Sync - Living Room Lights
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.livingroom_tvtreelights
+  action:
+  - service: light.turn_{{ trigger.to_state.state }}
+    target:
+      entity_id:
+      - light.balcony_planterlights
+      - light.livingroom_candles
+      - light.livingroom_sidetablelamp
+      - light.living_room_lamp

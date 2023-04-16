@@ -1,0 +1,15 @@
+---
+alexa:
+  smart_home:
+    endpoint: !secret alexa_endpoint
+    client_id: !secret alexa_client_id
+    client_secret: alexa_client_secret
+    filter:
+      include_entities:
+        - light.ron_s_bedroom_lamp
+        - light.spare_light_1
+        - light.spare_light_2
+        - light.balcony_planterlights
+        - media_player.living_room_tv
+        - media_player.skyq_living_room
+        - light.livingroom_sidetablelamp

@@ -1,0 +1,8 @@
+---
+# Fitbit Monitor
+#
+# https://www.home-assistant.io/integrations/fitbit/
+#
+platform: fitbit
+monitored_resources:
+  - "devices/battery"

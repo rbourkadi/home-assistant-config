@@ -1,0 +1,47 @@
+---
+google_assistant:
+  project_id: !secret google_project
+  service_account: !include ../SERVICE_ACCOUNT.json
+  report_state: true
+  expose_by_default: false
+  entity_config:
+    light.spare_light_1:
+      name: "Spare Room Light 1"
+      room: "Spare Room"
+      expose: true
+    light.spare_light_2:
+      name: "Spare Room Light 2"
+      room: "Spare Room"
+      expose: true
+    media_player.living_room_tv:
+      name: "Living Room TV"
+      room: "Living Room"
+      expose: true
+    media_player.skyq_living_room:
+      name: "Sky Q Living Room"
+      room: "Living Room"
+      expose: true
+    light.ron_s_bedroom_lamp:
+      name: "Ron's Bedroom Lamp"
+      room: "Bedroom"
+      expose: true
+    light.livingroom_tvtreelights:
+      name: "Living Room TV Tree Lights"
+      room: "Living Room"
+      expose: true
+    light.livingroom_candles:
+      name: "Living Room Candles"
+      room: "Living Room"
+      expose: true
+    light.livingroom_sidetablelamp:
+      name: "Living Room Side Table Lamp"
+      room: "Living Room"
+      expose: true
+    input_select.washing_machine_status:
+      name: "Washing Machine"
+      room: "Hallway Cupboard"
+      expose: true
+#    script.sleepmusic_bedroom:
+#      name: "Play Sleep Music"
+#      room: "Bedroom"
+#      expose: true

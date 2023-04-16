@@ -1,0 +1,29 @@
+---
+# Template switches for the Balcony Planter Lights using Broadlink RM4 Pro
+#
+# https://www.home-assistant.io/integrations/light.template/
+#
+platform: template
+lights:
+  balcony_planterlights:
+    friendly_name: Balcony Planter Lights
+    unique_id: balcony_planterlights
+    value_template: "{{ states('input_boolean.balcony_planterlights') }}"
+    turn_on:
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.balcony_planterlights
+      - service: remote.send_command
+        data:
+          command: power_on
+          device: planter_lights
+          entity_id: remote.living_room_bl
+    turn_off:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.balcony_planterlights
+      - service: remote.send_command
+        data:
+          command: power_off
+          device: planter_lights
+          entity_id: remote.living_room_bl

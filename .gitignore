@@ -1,0 +1,44 @@
+# Generic ignores
+*.log
+*.log.*
+*.db
+*.db-shm
+*.db-wal
+*.pyc
+*.disable
+._*
+__pycache__
+
+
+# Directory (contents) ignores
+.cloud
+.storage
+.ssh
+heimdall
+
+# Specific file ignores
+core
+image
+secrets.yaml
+known_devices.yaml
+HP\ DeskJet\ 2542-*.*
+SERVICE_ACCOUNT.json
+fitbit.conf
+harmony_*.conf
+watchman_report.txt
+
+# Build-in blueprints ignores
+blueprints/*/homeassistant
+
+# Ignore add-on files
+aircast.xml
+
+# Ignore files created by IDE's
+.vscode
+
+# Ignore vendored stuff
+themes
+www/community
+
+# Specific keeps
+!.gitkeep

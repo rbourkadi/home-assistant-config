@@ -1,0 +1,44 @@
+    skyq_pauselivingroom:
+      value_template: '{{"off"}}'
+      friendly_name: 'pause in the Living Room'
+      turn_on:
+        - service: media_player.media_pause
+          data:
+            entity_id: media_player.skyq_living_room
+        - delay:
+            seconds: 10
+      turn_off:
+        stop:
+    skyq_playlivingroom:
+      value_template: '{{"off"}}'
+      friendly_name: 'play in the Living Room'
+      turn_on:
+        - service: media_player.media_play
+          data:
+            entity_id: media_player.skyq_living_room
+        - delay:
+            seconds: 10
+      turn_off:
+        stop:
+    skyq_fflivingroom:
+      value_template: '{{"off"}}'
+      friendly_name: 'fastforward in the Living Room'
+      turn_on:
+        - service: media_player.media_next_track
+          data:
+            entity_id: media_player.skyq_living_room
+        - delay:
+            seconds: 10
+      turn_off:
+        stop:
+    skyq_rwlivingroom:
+      value_template: '{{"off"}}'
+      friendly_name: 'rewind in the Living Room'
+      turn_on:
+        - service: media_player.media_previous_track
+          data:
+            entity_id: media_player.skyq_living_room
+        - delay:
+            seconds: 10
+      turn_off:
+        stop:

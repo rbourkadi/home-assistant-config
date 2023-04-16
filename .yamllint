@@ -1,0 +1,9 @@
+---
+extends: default
+
+ignore: |
+  blueprints/
+  custom_components/
+  skyqLivingRoom.yaml
+  automations.yaml
+  customize.yaml

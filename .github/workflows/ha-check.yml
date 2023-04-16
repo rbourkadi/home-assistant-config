@@ -1,0 +1,32 @@
+---
+name: Home Assistant Config Check
+on: [push, pull_request]  # yamllint disable-line rule:truthy
+jobs:
+  yamllint:
+    name: 🧹 yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v3
+      - name: 🚀 Run yamllint
+        uses: frenck/action-yamllint@v1.4.0
+  home-assistant:
+    name: Home Assistant Core Configuration Check
+    runs-on: ubuntu-latest
+    needs: [yamllint]
+    steps:
+      - name: ⤵️ Check out configuration from GitHub
+        uses: actions/checkout@v3
+      - name: Copy fake service account file
+        run: |
+          cp -R fake_SERVICE_ACCOUNT.json SERVICE_ACCOUNT.json
+      - name: ➕ Create dummy files
+        run: |
+          mkdir ./ssl
+          touch ./ssl/fullchain.pem
+          touch ./ssl/privkey.pem
+      - name: 🚀 Run Home Assistant Configuration Check
+        uses: frenck/action-home-assistant@v1.4.1
+        with:
+          secrets: fakesecrets.yaml
+          version: stable

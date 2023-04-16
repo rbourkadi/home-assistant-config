@@ -1,0 +1,6 @@
+---
+# Enables the WOL function in Home Assistant.
+#
+# https://www.home-assistant.io/integrations/wake_on_lan/
+#
+wake_on_lan:

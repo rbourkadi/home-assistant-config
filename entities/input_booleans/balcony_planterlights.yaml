@@ -1,0 +1,8 @@
+---
+# Balcony Planter Lights
+#
+# https://www.home-assistant.io/integrations/input_boolean/
+#
+balcony_planterlights:
+  name: Balcony Planter Lights
+  icon: mdi:light-flood-up

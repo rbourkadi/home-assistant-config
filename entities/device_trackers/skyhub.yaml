@@ -1,0 +1,10 @@
+---
+# Sky Hub Device Tracker
+#
+# https://www.home-assistant.io/integrations/sky_hub/
+#
+platform: sky_hub
+host: !secret router_ip
+interval_seconds: 30
+new_device_defaults:
+  track_new_devices: false

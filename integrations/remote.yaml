@@ -1,0 +1,6 @@
+---
+# Remote integrations
+#
+# https://www.home-assistant.io/integrations/remote
+#
+remote: !include_dir_list ../entities/remotes

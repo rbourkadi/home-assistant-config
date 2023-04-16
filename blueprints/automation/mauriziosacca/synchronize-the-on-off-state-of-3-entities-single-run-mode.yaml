@@ -1,0 +1,42 @@
+blueprint:
+  name: Synchronize 3 states
+  description: Synchronize the on/off state of 3 entities
+  domain: automation
+  input:
+    entity_1:
+      name: First entity
+      selector:
+        entity: {}
+    entity_2:
+      name: Second entity
+      selector:
+        entity: {}
+    entity_3:
+      name: Third entity
+      selector:
+        entity: {}
+  source_url: https://community.home-assistant.io/t/synchronize-the-on-off-state-of-3-entities-single-run-mode/410013
+mode: single
+max_exceeded: silent
+variables:
+  entity_1: !input entity_1
+  entity_2: !input entity_2
+  entity_3: !input entity_3
+trigger:
+- platform: state
+  entity_id:
+  - !input entity_1
+  - !input entity_2
+  - !input entity_3
+condition:
+- condition: or
+  conditions:
+  - '{{ states(entity_1) != states(entity_2) }}'
+  - '{{ states(entity_1) != states(entity_3) }}'
+action:
+- service: homeassistant.turn_{{ trigger.to_state.state }}
+  target:
+    entity_id: '{% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }},
+      {{ entity_3 }} {% elif trigger.from_state.entity_id == entity_2 %} {{ entity_1
+      }}, {{ entity_3 }} {% elif trigger.from_state.entity_id == entity_3 %} {{ entity_1
+      }}, {{ entity_2 }} {% endif %}'

@@ -1,0 +1,12 @@
+---
+# Check if Ron's PC is connected
+#
+#
+binary_sensor:
+  - state_topic: "homeassistant/sensor/RON_PC/availability"
+    name: "Ron's Computer - Connected"
+    value_template: "{{ value }}"
+    payload_on: "online"
+    payload_off: "offline"
+    device_class: "connectivity"
+    qos: 1

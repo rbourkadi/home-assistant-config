@@ -1,0 +1,27 @@
+---
+#####
+# Send notification when ink levels are low!
+# Adapted from:
+# https://github.com/BeardedTinker/Home-Assistant_Config/blob/master/automations/hp_ink_levels.yaml
+#####
+
+alias: 'Notification - Ink Alert'
+id: 152242fd-7e93-47ea-98cb-6084a02a9d79
+
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.hp_deskjet_2542_inkcartridge_black
+      - sensor.hp_deskjet_2542_inkcartridge_cyanmagentayellow
+      - sensor.hp_deskjet_2542_inkcartridge_unknown
+    below: 25
+    above: 0
+
+action:
+  - service: notify.mobile_app_ron_s_phone
+    data:
+      title: "HP Printer Ink low"
+      message: >
+        {{ trigger.to_state.attributes.friendly_name }}
+        is at
+        {{ trigger.to_state.state }}
