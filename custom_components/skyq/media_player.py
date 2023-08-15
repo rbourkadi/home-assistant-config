@@ -176,6 +176,8 @@ async def _async_setup_platform_entry(
 class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     """Representation of a SkyQ Box."""
 
+    _attr_has_entity_name = True
+
     def __init__(
         self,
         hass,
@@ -234,7 +236,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     @property
     def name(self):
         """Get the name of the devices."""
-        return self._config.name
+        return None
 
     @property
     def should_poll(self):
@@ -446,7 +448,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     async def async_select_source(self, source):
         """Select the specified source."""
         if command := get_command(
-            self._config.custom_sources, self._channel_list, source
+            self._config.custom_sources,
+            self._channel_list,
+            source,
+            self._config.enabled_features,
         ):
             await self._press_button(command)
             await self.async_update()
