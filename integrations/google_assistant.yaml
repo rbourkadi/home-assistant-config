@@ -29,10 +29,6 @@ google_assistant:
       name: "Living Room TV Tree Lights"
       room: "Living Room"
       expose: true
-    light.livingroom_candles:
-      name: "Living Room Candles"
-      room: "Living Room"
-      expose: true
     light.livingroom_sidetablelamp:
       name: "Living Room Side Table Lamp"
       room: "Living Room"

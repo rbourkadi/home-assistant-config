@@ -247,6 +247,5 @@
     target:
       entity_id:
       - light.balcony_planterlights
-      - light.livingroom_candles
       - light.livingroom_sidetablelamp
       - light.living_room_lamp
