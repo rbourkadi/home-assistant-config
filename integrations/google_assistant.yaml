@@ -41,3 +41,7 @@ google_assistant:
 #      name: "Play Sleep Music"
 #      room: "Bedroom"
 #      expose: true
+    light.living_room_sofa_led_strip:
+      name: "Living Room Sofa LED Strip"
+      room: "Living Room"
+      expose: true

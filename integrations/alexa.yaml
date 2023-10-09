@@ -16,3 +16,4 @@ alexa:
         - light.livingroom_sidetablelamp
         - light.living_room_lamp
         - light.livingroom_tvtreelights
+        - light.living_room_sofa_led_strip
