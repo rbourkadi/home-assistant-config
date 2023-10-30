@@ -249,4 +249,60 @@
       - light.balcony_planterlights
       - light.livingroom_sidetablelamp
       - light.living_room_lamp
-      - light.living_room_sofa_led_strip
+      - light.living_room_led_strips
+- id: '1698578180957'
+  alias: Turn on TV LED Strip when TV is turned on
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 7639e466da454a2ebb961fb7a841407d
+    domain: media_player
+    entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
+    type: turned_on
+  condition:
+  - condition: sun
+    after: sunset
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.tv_led_scene
+    metadata: {}
+  mode: single
+- id: '1698578230341'
+  alias: Turn off TV LED Strip when TV is turned off
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 7639e466da454a2ebb961fb7a841407d
+    domain: media_player
+    entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
+    type: turned_off
+  condition:
+  - condition: sun
+    after: sunset
+  action:
+  - type: turn_off
+    device_id: df5ff1e6d312c625dc5e50cba19a6887
+    entity_id: eab4279243b79148c2c7df79a1c2ebbd
+    domain: light
+  mode: single
+- id: '1698579183992'
+  alias: Sync TV LED Strip Lights
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.livingroom_tvtreelights
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state in [''on'', ''off''] }}'
+  - condition: device
+    device_id: 7639e466da454a2ebb961fb7a841407d
+    domain: media_player
+    entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
+    type: is_on
+  action:
+  - service: light.turn_{{ trigger.to_state.state }}
+    target:
+      entity_id:
+      - light.living_room_tv_led_strip
+  mode: single
