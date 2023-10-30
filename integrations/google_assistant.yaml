@@ -37,10 +37,10 @@ google_assistant:
       name: "Washing Machine"
       room: "Hallway Cupboard"
       expose: true
-#   script.sleepmusic_bedroom:
-#     name: "Play Sleep Music"
-#     room: "Bedroom"
-#     expose: true
+    # script.sleepmusic_bedroom:
+      # name: "Play Sleep Music"
+      # room: "Bedroom"
+      # expose: true
     light.living_room_sofa_led_strip:
       name: "Living Room Sofa LED Strip"
       room: "Living Room"
