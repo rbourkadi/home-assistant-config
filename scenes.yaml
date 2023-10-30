@@ -1,2 +1,114 @@
----
-[]
+- id: '1697369235506'
+  name: Living Room LED Strip Colour
+  entities:
+    light.living_room_led_strips:
+      supported_color_modes:
+      - rgbw
+      icon: mdi:led-strip-variant
+      friendly_name: Living Room LED Strips
+      supported_features: 36
+      effect_list:
+      - blue_fade
+      - blue_strobe
+      - colorjump
+      - colorloop
+      - colorstrobe
+      - cyan_fade
+      - cyan_strobe
+      - cycle_rgb
+      - cycle_seven_colors
+      - gb_cross_fade
+      - green_fade
+      - green_strobe
+      - purple_fade
+      - purple_strobe
+      - random
+      - rb_cross_fade
+      - red_fade
+      - red_strobe
+      - rg_cross_fade
+      - rgb_cross_fade
+      - white_fade
+      - white_strobe
+      - yellow_fade
+      - yellow_strobe
+      color_mode: rgbw
+      brightness: 134
+      hs_color:
+      - 47.705
+      - 95.686
+      rgb_color:
+      - 255
+      - 205
+      - 11
+      rgbw_color:
+      - 255
+      - 203
+      - 0
+      - 12
+      xy_color:
+      - 0.507
+      - 0.462
+      entity_id:
+      - light.living_room_sofa_led_strip
+      - light.living_room_chair_led_strip
+      state: 'on'
+  icon: mdi:sofa
+  metadata:
+    light.living_room_led_strips:
+      entity_only: true
+- id: '1698529790308'
+  name: TV LED Scene
+  entities:
+    light.living_room_tv_led_strip:
+      effect_list:
+      - blue_fade
+      - blue_strobe
+      - colorjump
+      - colorloop
+      - colorstrobe
+      - cyan_fade
+      - cyan_strobe
+      - cycle_rgb
+      - cycle_seven_colors
+      - gb_cross_fade
+      - green_fade
+      - green_strobe
+      - purple_fade
+      - purple_strobe
+      - rb_cross_fade
+      - red_fade
+      - red_strobe
+      - rg_cross_fade
+      - rgb_cross_fade
+      - white_fade
+      - white_strobe
+      - yellow_fade
+      - yellow_strobe
+      - random
+      supported_color_modes:
+      - rgbw
+      color_mode: rgbw
+      brightness: 128
+      hs_color:
+      - 39.842
+      - 99.216
+      rgb_color:
+      - 255
+      - 170
+      - 2
+      rgbw_color:
+      - 255
+      - 169
+      - 0
+      - 2
+      xy_color:
+      - 0.555
+      - 0.422
+      ip_address: 192.168.10.20
+      friendly_name: Living Room TV LED Strip
+      supported_features: 36
+      state: 'on'
+  metadata:
+    light.living_room_tv_led_strip:
+      entity_only: true
