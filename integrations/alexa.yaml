@@ -17,3 +17,5 @@ alexa:
         - light.living_room_lamp
         - light.livingroom_tvtreelights
         - light.living_room_sofa_led_strip
+        - light.living_room_chair_led_strip
+        - light.living_room_tv_led_strip

@@ -45,3 +45,11 @@ google_assistant:
       name: "Living Room Sofa LED Strip"
       room: "Living Room"
       expose: true
+    light.living_room_chair_led_strip:
+      name: "Living Room Chair LED Strip"
+      room: "Living Room"
+      expose: true
+    light.living_room_tv_led_strip:
+      name: "Living Room TV LED Strip"
+      room: "Living Room"
+      expose: true
