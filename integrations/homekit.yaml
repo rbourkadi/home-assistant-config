@@ -1,10 +1,6 @@
 ---
-alexa:
-  smart_home:
-    endpoint: !secret alexa_endpoint
-    client_id: !secret alexa_client_id
-    client_secret: alexa_client_secret
-    filter:
+homekit:
+  - filter:
       include_entities:
         - light.ron_s_bedroom_lamp
         - light.stevey_s_bedroom_lamp
