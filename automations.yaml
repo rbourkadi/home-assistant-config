@@ -248,7 +248,6 @@
       entity_id:
       - light.balcony_planterlights
       - light.livingroom_sidetablelamp
-      - light.living_room_lamp
       - light.living_room_led_strips
 - id: '1698578180957'
   alias: Turn on TV LED Strip when TV is turned on
