@@ -1,4 +1,5 @@
 """Helper functions for the plant integration"""
+
 from __future__ import annotations
 
 import logging
@@ -10,7 +11,7 @@ import voluptuous as vol
 from homeassistant.components.persistent_notification import (
     create as create_notification,
 )
-from homeassistant.const import ATTR_ENTITY_PICTURE, ATTR_NAME, TEMP_CELSIUS
+from homeassistant.const import ATTR_ENTITY_PICTURE, ATTR_NAME, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.temperature import display_temp
@@ -165,13 +166,13 @@ class PlantHelper:
         max_temp = display_temp(
             self.hass,
             DEFAULT_MAX_TEMPERATURE,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             0,
         )
         min_temp = display_temp(
             self.hass,
             DEFAULT_MIN_TEMPERATURE,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             0,
         )
         max_conductivity = DEFAULT_MAX_CONDUCTIVITY
@@ -240,7 +241,7 @@ class PlantHelper:
                     CONF_PLANTBOOK_MAPPING[CONF_MAX_TEMPERATURE],
                     DEFAULT_MAX_TEMPERATURE,
                 ),
-                TEMP_CELSIUS,
+                UnitOfTemperature.CELSIUS,
                 0,
             )
             min_temp = display_temp(
@@ -249,7 +250,7 @@ class PlantHelper:
                     CONF_PLANTBOOK_MAPPING[CONF_MIN_TEMPERATURE],
                     DEFAULT_MIN_TEMPERATURE,
                 ),
-                TEMP_CELSIUS,
+                UnitOfTemperature.CELSIUS,
                 0,
             )
             opb_mmol = opb_plant.get(CONF_PLANTBOOK_MAPPING[CONF_MAX_MMOL])

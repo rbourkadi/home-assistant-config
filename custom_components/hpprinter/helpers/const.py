@@ -1,12 +1,5 @@
-from homeassistant.components.binary_sensor import (
-    DOMAIN as DOMAIN_BINARY_SENSOR,
-    BinarySensorDeviceClass,
-)
-from homeassistant.components.sensor import (
-    DOMAIN as DOMAIN_SENSOR,
-    SensorDeviceClass,
-    SensorStateClass,
-)
+from homeassistant.components.binary_sensor import DOMAIN as DOMAIN_BINARY_SENSOR
+from homeassistant.components.sensor import DOMAIN as DOMAIN_SENSOR
 
 MANUFACTURER = "HP"
 DEFAULT_NAME = "HP Printer"
@@ -125,8 +118,8 @@ NOT_AVAILABLE = "N/A"
 
 HP_INK_MAPPING = {"C": "Cyan", "Y": "Yellow", "M": "Magenta", "K": "Black"}
 
-SIGNAL_UPDATE_BINARY_SENSOR = f"{DEFAULT_NAME}_{DOMAIN_BINARY_SENSOR}_SIGNLE_UPDATE"
-SIGNAL_UPDATE_SENSOR = f"{DEFAULT_NAME}_{DOMAIN_SENSOR}_SIGNLE_UPDATE"
+SIGNAL_UPDATE_BINARY_SENSOR = f"{DEFAULT_NAME}_{DOMAIN_BINARY_SENSOR}_SIGNAL_UPDATE"
+SIGNAL_UPDATE_SENSOR = f"{DEFAULT_NAME}_{DOMAIN_SENSOR}_SIGNAL_UPDATE"
 
 SIGNALS = {
     DOMAIN_BINARY_SENSOR: SIGNAL_UPDATE_BINARY_SENSOR,

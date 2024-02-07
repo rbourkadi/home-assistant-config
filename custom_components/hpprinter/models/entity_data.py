@@ -1,5 +1,8 @@
 from typing import Optional
 
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+
 from ..helpers.const import *
 
 
@@ -41,7 +44,7 @@ class EntityData:
             ENTITY_DISABLED: self.disabled,
             ENTITY_BINARY_SENSOR_DEVICE_CLASS: self.binary_sensor_device_class,
             ENTITY_SENSOR_DEVICE_CLASS: self.sensor_device_class,
-            ENTITY_SENSOR_STATE_CLASS: self.sensor_state_class
+            ENTITY_SENSOR_STATE_CLASS: self.sensor_state_class,
         }
 
         to_string = f"{obj}"

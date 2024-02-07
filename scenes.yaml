@@ -3,7 +3,7 @@
   entities:
     light.living_room_led_strips:
       supported_color_modes:
-      - rgbw
+        - rgbw
       icon: mdi:led-strip-variant
       friendly_name: Living Room LED Strips
       supported_features: 36
