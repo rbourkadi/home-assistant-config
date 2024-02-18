@@ -15,6 +15,7 @@ __pycache__
 .storage
 .ssh
 heimdall
+tts
 
 # Specific file ignores
 core
