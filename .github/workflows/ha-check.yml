@@ -1,5 +1,6 @@
 ---
 name: Home Assistant Config Check
+# yamllint disable-line rule:truthy
 on: [push, pull_request]
 jobs:
   yamllint:
