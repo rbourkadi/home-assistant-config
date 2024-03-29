@@ -20,7 +20,9 @@ jobs:
         uses: "docker://pipelinecomponents/remark-lint:latest"
         continue-on-error: true
         with:
-          args: "remark --no-stdout --color --frail --use preset-lint-recommended ." # yamllint disable-line rule:truthy
+          args: >
+            remark --no-stdout --color --frail 
+            --use preset-lint-recommended .
 
   home-assistant:
     name: Home Assistant Core Configuration Check
