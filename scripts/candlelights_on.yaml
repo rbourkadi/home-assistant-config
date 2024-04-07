@@ -1,8 +1,0 @@
----
-alias: Turn On Living Room Candles
-sequence:
-  - data:
-      command: power_on
-      device: livingroom_candles
-    entity_id: remote.living_room_bl
-    service: remote.send_command
