@@ -14,7 +14,7 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_UNIT_OF_MEASUREMENT,
@@ -52,6 +52,7 @@ from homeassistant.util.unit_conversion import (
     PowerConverter,
 )
 
+from custom_components.powercalc.config_flow import ConfigFlow
 from custom_components.powercalc.const import (
     ATTR_ENTITIES,
     ATTR_IS_GROUP,
@@ -279,7 +280,7 @@ async def add_to_associated_group(
     we need to add this config entry to the group members sensors and update the group.
     """
     sensor_type = config_entry.data.get(CONF_SENSOR_TYPE)
-    if sensor_type != SensorType.VIRTUAL_POWER:
+    if sensor_type not in [SensorType.VIRTUAL_POWER, SensorType.DAILY_ENERGY]:
         return None
 
     if CONF_GROUP not in config_entry.data:
@@ -287,6 +288,22 @@ async def add_to_associated_group(
 
     group_entry_id = str(config_entry.data.get(CONF_GROUP))
     group_entry = hass.config_entries.async_get_entry(group_entry_id)
+
+    # When we are not dealing with a uuid, the user has set a group name manually
+    # Create a new group entry for this group
+    if not group_entry and len(group_entry_id) != 32:
+        group_entry = ConfigEntry(
+            version=ConfigFlow.VERSION,
+            minor_version=ConfigFlow.MINOR_VERSION,
+            domain=DOMAIN,
+            source=SOURCE_IMPORT,
+            title=group_entry_id,
+            data={
+                CONF_SENSOR_TYPE: SensorType.GROUP,
+                CONF_NAME: group_entry_id,
+            },
+        )
+        await hass.config_entries.async_add(group_entry)
 
     if not group_entry:
         _LOGGER.warning(
@@ -726,13 +743,7 @@ class GroupedEnergySensor(GroupedSensor, EnergySensor):
                 entity_state.entity_id,
             )
             cur_state_value = self._get_state_value_in_native_unit(entity_state)
-
-            if prev_state:
-                prev_state_value = self._get_state_value_in_native_unit(prev_state)
-            else:
-                prev_state_value = (
-                    cur_state_value if self._attr_native_value else Decimal(0)
-                )
+            prev_state_value = self._get_state_value_in_native_unit(prev_state) if prev_state else Decimal(0)
             self._prev_state_store.set_entity_state(
                 self.entity_id,
                 entity_state.entity_id,
