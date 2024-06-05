@@ -40,56 +40,53 @@
     path: Sbyx/notify-or-do-something-when-an-appliance-like-a-dishwasher-or-washing-machine-finishes.yaml
     input:
       actions:
-      - if:
-        - condition: device
-          device_id: 11f8e78729894007a306b1fac55ad6b2
-          domain: device_tracker
-          entity_id: device_tracker.ron_s_phone
-          type: is_home
-        then:
-        - service: notify.mobile_app_ron_s_phone
-          data:
-            message: Washing Machine has finished!
+      - parallel:
+        - if:
+          - condition: device
+            device_id: 11f8e78729894007a306b1fac55ad6b2
+            domain: device_tracker
+            entity_id: device_tracker.ron_s_phone
+            type: is_home
+          then:
+          - service: notify.mobile_app_ron_s_phone
             data:
-              persistent: true
-              tag: washing
-              actions:
-              - action: MACHINE_EMPTIED
-                title: It's done
-      - service: notify.ron_pc
-        data:
-          message: The Washing Machine is finished
-          title: Washing Machine
-      - if:
-        - condition: or
-          conditions:
-          - condition: time
-            weekday:
-            - sat
-            - sun
-            after: 09:00:00
-          - condition: time
-            after: '18:00:00'
-            before: '22:00:00'
-            weekday:
-            - mon
-            - tue
-            - wed
-            - thu
-            - fri
-        then:
-        - service: notify.alexa_media
-          data:
-            message: The washing machine is finished
+              message: Washing Machine has finished!
+              data:
+                persistent: true
+                tag: washing
+                actions:
+                - action: MACHINE_EMPTIED
+                  title: It's done
+        - if:
+          - condition: or
+            conditions:
+            - condition: time
+              weekday:
+              - sat
+              - sun
+              after: 09:00:00
+            - condition: time
+              after: '18:00:00'
+              before: '22:00:00'
+              weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - fri
+          then:
+          - service: notify.alexa_media
             data:
-              type: announce
-            target:
-            - media_player.spare_room_echo_dot
-        else:
-        - service: notify.ron_pc
-          data:
-            message: Notification Out-of-Hours
-            title: Washing Machine
+              message: The washing machine is finished
+              data:
+                type: announce
+              target:
+              - media_player.spare_room_echo_dot
+          - service: notify.ron_pc
+            data:
+              message: Notification Out-of-Hours
+              title: Washing Machine
+          else: []
       power_sensor: sensor.washingmachine_consumption
       finishing_threshold: 2
       starting_threshold: 3
