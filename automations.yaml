@@ -7,15 +7,20 @@
     domain: media_player
     entity_id: media_player.living_room_tv
     type: turned_off
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
   action:
-  - service: media_player.turn_off
-    target:
-      device_id: 2571b4e503bb55c93820af4922fdf88a
-    data: {}
-  - service: media_player.turn_off
-    data: {}
-    target:
-      device_id: 2a84fbc16d8f5b517f8a643940ec5992
+  - parallel:
+    - service: media_player.turn_off
+      target:
+        device_id: 2571b4e503bb55c93820af4922fdf88a
+      data: {}
+    - service: media_player.turn_off
+      data: {}
+      target:
+        device_id: 2a84fbc16d8f5b517f8a643940ec5992
   mode: single
 - id: '1688463054311'
   alias: Spare Room Lights Power Toggle
