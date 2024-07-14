@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+from datetime import datetime
+>>>>>>> 752dd55 (Latest changes)
 import json
 import logging
 import sys
@@ -7,19 +11,36 @@ from defusedxml import ElementTree
 from flatten_json import flatten
 import xmltodict
 
+<<<<<<< HEAD
 from homeassistant.const import CONF_HOST
+=======
+>>>>>>> 752dd55 (Latest changes)
 from homeassistant.helpers.aiohttp_client import (
     ENABLE_CLEANUP_CLOSED,
     MAXIMUM_CONNECTIONS,
     MAXIMUM_CONNECTIONS_PER_HOST,
+<<<<<<< HEAD
+=======
+    async_create_clientsession,
+>>>>>>> 752dd55 (Latest changes)
 )
 from homeassistant.helpers.dispatcher import dispatcher_send
 from homeassistant.util import slugify, ssl
 from homeassistant.util.ssl import SSLCipherList
 
+<<<<<<< HEAD
 from ..common.consts import IGNORED_KEYS, SIGNAL_HA_DEVICE_DISCOVERED
 from ..models.config_data import ConfigData
 from ..models.exceptions import IntegrationAPIError, IntegrationParameterError
+=======
+from ..common.consts import (
+    IGNORED_KEYS,
+    PRODUCT_STATUS_ENDPOINT,
+    PRODUCT_STATUS_OFFLINE_PAYLOAD,
+    SIGNAL_HA_DEVICE_DISCOVERED,
+)
+from ..models.config_data import ConfigData
+>>>>>>> 752dd55 (Latest changes)
 from .ha_config_manager import HAConfigManager
 
 _LOGGER = logging.getLogger(__name__)
@@ -30,11 +51,16 @@ class RestAPIv2:
         self._loop = hass.loop
         self._config_manager = config_manager
         self._hass = hass
+<<<<<<< HEAD
+=======
+        self._endpoints = self._config_manager.endpoints
+>>>>>>> 752dd55 (Latest changes)
 
         self._session: ClientSession | None = None
 
         self._data: dict = {}
         self._data_config: dict = {}
+<<<<<<< HEAD
 
         self._raw_data: dict = {}
 
@@ -44,6 +70,17 @@ class RestAPIv2:
         self._all_endpoints: list[str] = []
         self._support_prefetch: bool = False
 
+=======
+        self._last_update: dict[str, float] = {}
+
+        self._raw_data: dict = {}
+
+        self._device_dispatched: list[str] = []
+        self._support_prefetch: bool = False
+
+        self._is_online: bool = False
+
+>>>>>>> 752dd55 (Latest changes)
     @property
     def data(self) -> dict | None:
         return self._data
@@ -63,16 +100,27 @@ class RestAPIv2:
 
         return None
 
+<<<<<<< HEAD
     async def terminate(self):
         _LOGGER.info("Terminating session to HP Printer EWS")
 
         self._is_connected = False
 
+=======
+    @property
+    def is_online(self) -> bool:
+        return self._is_online
+
+    async def terminate(self):
+        _LOGGER.info("Terminating session to HP Printer EWS")
+
+>>>>>>> 752dd55 (Latest changes)
         if self._session is not None:
             await self._session.close()
 
             self._session = None
 
+<<<<<<< HEAD
     async def initialize(self, throw_exception: bool = False):
         try:
             if not self.config_data.hostname:
@@ -89,6 +137,19 @@ class RestAPIv2:
             if throw_exception:
                 raise ex
 
+=======
+    async def initialize(self):
+        try:
+            if self._session is None:
+                if self._hass is None:
+                    self._session = ClientSession(loop=self._loop)
+                else:
+                    self._session = async_create_clientsession(hass=self._hass)
+
+            await self._update_product_status_endpoint_data()
+
+        except Exception as ex:
+>>>>>>> 752dd55 (Latest changes)
             exc_type, exc_obj, tb = sys.exc_info()
             line_number = tb.tb_lineno
 
@@ -109,6 +170,7 @@ class RestAPIv2:
 
         return connector
 
+<<<<<<< HEAD
     async def _load_metadata(self):
         self._all_endpoints = []
 
@@ -165,6 +227,103 @@ class RestAPIv2:
         devices = self._get_devices_data()
 
         self._extract_data(devices)
+=======
+    async def _update_endpoint_data(self, endpoint: str) -> bool:
+        can_update = False
+
+        try:
+            now = datetime.now()
+            now_ts = now.timestamp()
+
+            last_update = self._last_update.get(endpoint, 0)
+
+            last_update_diff = int(now_ts - last_update)
+            interval = self._config_manager.get_update_interval(endpoint)
+
+            can_update = last_update_diff >= interval
+
+            if can_update:
+                data = await self._get_request(endpoint)
+
+                self._raw_data[endpoint] = data
+                self._last_update[endpoint] = now_ts
+
+        except Exception as ex:
+            exc_type, exc_obj, tb = sys.exc_info()
+            line_number = tb.tb_lineno
+
+            _LOGGER.error(
+                f"Failed to update endpoint {endpoint} data, Error: {ex}, Line: {line_number}"
+            )
+
+        return can_update
+
+    async def _update_product_status_endpoint_data(self) -> bool:
+        was_changed = False
+
+        try:
+            status_endpoint = PRODUCT_STATUS_ENDPOINT
+
+            was_online = self.is_online
+            was_updated = await self._update_endpoint_data(status_endpoint)
+
+            if was_updated:
+                product_status_data = self._raw_data.get(status_endpoint)
+                self._is_online = product_status_data is not None
+
+                if not self._is_online:
+                    self._raw_data[status_endpoint] = PRODUCT_STATUS_OFFLINE_PAYLOAD
+
+                was_changed = self._is_online != was_online
+
+            if was_changed:
+                _LOGGER.debug(f"Device online state changed to {self._is_online}")
+
+                got_online = not was_online and self._is_online
+
+                if got_online:
+                    for endpoint in self._last_update:
+                        if endpoint != PRODUCT_STATUS_ENDPOINT:
+                            self._last_update[endpoint] = 0
+
+        except Exception as ex:
+            exc_type, exc_obj, tb = sys.exc_info()
+            line_number = tb.tb_lineno
+
+            _LOGGER.error(
+                f"Failed to update product status data, Error: {ex}, Line: {line_number}"
+            )
+
+        return was_changed
+
+    async def update(self, endpoints: list[str] = None):
+        try:
+            _LOGGER.debug(f"Updating data from {self.config_data.hostname}")
+
+            was_changed = await self._update_product_status_endpoint_data()
+            update_counter = 1 if was_changed else 0
+
+            if self._is_online:
+                if endpoints is None:
+                    endpoints = self._config_manager.endpoints
+
+                for endpoint in endpoints:
+                    was_updated = await self._update_endpoint_data(endpoint)
+
+                    if was_updated:
+                        update_counter += 1
+
+            if update_counter > 0:
+                devices = self._get_devices_data()
+
+                self._extract_data(devices)
+
+        except Exception as ex:
+            exc_type, exc_obj, tb = sys.exc_info()
+            line_number = tb.tb_lineno
+
+            _LOGGER.error(f"Failed to update data, Error: {ex}, Line: {line_number}")
+>>>>>>> 752dd55 (Latest changes)
 
     def _extract_data(self, devices: list[dict]):
         device_data = {}
@@ -213,6 +372,10 @@ class RestAPIv2:
                     device_key = f"{device_type}.{device_id}"
 
             data = device_data[device_key] if device_key in device_data else {}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 752dd55 (Latest changes)
             has_data = len(list(item_data.keys())) > 0
             data.update(item_data)
 
@@ -315,16 +478,35 @@ class RestAPIv2:
         for property_key in properties:
             property_details = properties.get(property_key)
             property_path = property_details.get("path")
+<<<<<<< HEAD
 
             value = data_item_flat.get(property_path)
 
             if value is not None:
                 device_data[property_key] = value
+=======
+            options = property_details.get("options")
+            validation_warning = property_details.get("validationWarning", False)
+            value = data_item_flat.get(property_path)
+
+            is_valid = True if options is None else str(value).lower() in options
+
+            if value is not None:
+                if is_valid:
+                    device_data[property_key] = value
+                else:
+                    log = _LOGGER.warning if validation_warning else _LOGGER.debug
+
+                    log(
+                        f"Unsupported value of {property_key}, expecting: {options}, received: {value}"
+                    )
+>>>>>>> 752dd55 (Latest changes)
 
         data = {"config": device_config, "data": device_data}
 
         return data
 
+<<<<<<< HEAD
     async def _get_request(
         self, endpoint: str, ignore_error: bool = False
     ) -> dict | None:
@@ -335,6 +517,20 @@ class RestAPIv2:
             timeout = ClientTimeout(connect=3, sock_read=10)
 
             async with self._session.get(url, timeout=timeout) as response:
+=======
+    async def _get_request(self, endpoint: str) -> dict | None:
+        result: dict | None = None
+        start_ts = datetime.now().timestamp()
+
+        try:
+            url = f"{self.config_data.url}{endpoint}"
+
+            timeout = ClientTimeout(total=5)
+
+            async with self._session.get(
+                url, timeout=timeout, verify_ssl=False
+            ) as response:
+>>>>>>> 752dd55 (Latest changes)
                 response.raise_for_status()
 
                 if response.content_type == "application/javascript":
@@ -353,6 +549,7 @@ class RestAPIv2:
                             if ignored_key in result[root_key]:
                                 del result[root_key][ignored_key]
 
+<<<<<<< HEAD
                 _LOGGER.debug(f"Request to {url}")
 
         except ClientResponseError as cre:
@@ -380,6 +577,56 @@ class RestAPIv2:
                     f"Failed to get {endpoint}, Error: {ex}, Line: {line_number}"
                 )
 
+=======
+                completed_ts = datetime.now().timestamp()
+                time_taken = completed_ts - start_ts
+                _LOGGER.debug(f"Request to {url} completed, Time: {time_taken:.3f}s")
+
+        except ClientResponseError as cre:
+            if cre.status == 404:
+                exc_type, exc_obj, tb = sys.exc_info()
+                line_number = tb.tb_lineno
+                completed_ts = datetime.now().timestamp()
+                time_taken = completed_ts - start_ts
+
+                _LOGGER.debug(
+                    f"Failed to get response from {endpoint}, "
+                    f"Error: {cre.status}, "
+                    f"Line: {line_number}, "
+                    f"Time: {time_taken:.3f}s"
+                )
+
+            else:
+                exc_type, exc_obj, tb = sys.exc_info()
+                line_number = tb.tb_lineno
+                completed_ts = datetime.now().timestamp()
+                time_taken = completed_ts - start_ts
+
+                _LOGGER.error(
+                    f"Failed to get response from {endpoint}, "
+                    f"Error: {cre.status}, "
+                    f"Line: {line_number}, "
+                    f"Time: {time_taken:.3f}s"
+                )
+
+        except TimeoutError:
+            _LOGGER.error(f"Failed to get {endpoint} due to timeout")
+
+        except Exception as ex:
+            exc_type, exc_obj, tb = sys.exc_info()
+            line_number = tb.tb_lineno
+
+            completed_ts = datetime.now().timestamp()
+            time_taken = completed_ts - start_ts
+
+            _LOGGER.error(
+                f"Failed to get {endpoint}, "
+                f"Error: {ex}, "
+                f"Line: {line_number}, "
+                f"Time: {time_taken:.3f}s"
+            )
+
+>>>>>>> 752dd55 (Latest changes)
         return result
 
     def _clean_data(self, xml) -> dict:

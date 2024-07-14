@@ -1,7 +1,11 @@
 import logging
 import sys
 
+<<<<<<< HEAD
 from homeassistant.core import Event
+=======
+from homeassistant.core import Event, callback
+>>>>>>> 752dd55 (Latest changes)
 from homeassistant.helpers.dispatcher import (
     async_dispatcher_connect,
     async_dispatcher_send,
@@ -12,6 +16,11 @@ from homeassistant.util import slugify
 
 from ..common.consts import (
     DOMAIN,
+<<<<<<< HEAD
+=======
+    MODEL_PROPERTY,
+    PRINTER_MAIN_DEVICE,
+>>>>>>> 752dd55 (Latest changes)
     SIGNAL_HA_DEVICE_CREATED,
     SIGNAL_HA_DEVICE_DISCOVERED,
 )
@@ -34,7 +43,11 @@ class HACoordinator(DataUpdateCoordinator):
             hass,
             _LOGGER,
             name=config_manager.entry_title,
+<<<<<<< HEAD
             update_interval=config_manager.update_interval,
+=======
+            update_interval=config_manager.minimum_update_interval,
+>>>>>>> 752dd55 (Latest changes)
             update_method=self._async_update_data,
         )
 
@@ -46,16 +59,24 @@ class HACoordinator(DataUpdateCoordinator):
         self._main_device_id: str | None = None
 
         self._device_handlers = {
+<<<<<<< HEAD
             "Main": self.create_main_device,
+=======
+            PRINTER_MAIN_DEVICE: self.create_main_device,
+>>>>>>> 752dd55 (Latest changes)
             "Consumable": self.create_consumable_device,
             "Adapter": self.create_adapter_device,
         }
 
+<<<<<<< HEAD
         self.config_entry.async_on_unload(
             async_dispatcher_connect(
                 hass, SIGNAL_HA_DEVICE_DISCOVERED, self._on_device_discovered
             )
         )
+=======
+        self._load_signal_handlers()
+>>>>>>> 752dd55 (Latest changes)
 
     @property
     def api(self) -> RestAPIv2:
@@ -92,6 +113,28 @@ class HACoordinator(DataUpdateCoordinator):
 
         await self.async_config_entry_first_refresh()
 
+<<<<<<< HEAD
+=======
+    def _load_signal_handlers(self):
+        loop = self.hass.loop
+
+        @callback
+        def on_device_discovered(
+            entry_id: str, device_key: str, device_data: dict, device_config: dict
+        ):
+            loop.create_task(
+                self._on_device_discovered(
+                    entry_id, device_key, device_data, device_config
+                )
+            ).__await__()
+
+        self.config_entry.async_on_unload(
+            async_dispatcher_connect(
+                self.hass, SIGNAL_HA_DEVICE_DISCOVERED, self._on_device_discovered
+            )
+        )
+
+>>>>>>> 752dd55 (Latest changes)
     def create_main_device(
         self, device_key: str, device_data: dict, device_config: dict
     ):
@@ -99,7 +142,11 @@ class HACoordinator(DataUpdateCoordinator):
             self._main_device_data = device_data
             self._main_device_id = device_key
 
+<<<<<<< HEAD
             model = device_data.get("make_and_model")
+=======
+            model = device_data.get(MODEL_PROPERTY)
+>>>>>>> 752dd55 (Latest changes)
             serial_number = device_data.get("serial_number")
             manufacturer = device_data.get("manufacturer_name")
 
@@ -131,7 +178,11 @@ class HACoordinator(DataUpdateCoordinator):
         self, device_key: str, device_data: dict, device_config: dict
     ):
         try:
+<<<<<<< HEAD
             model = self._main_device_data.get("make_and_model")
+=======
+            model = self._main_device_data.get(MODEL_PROPERTY)
+>>>>>>> 752dd55 (Latest changes)
             serial_number = self._main_device_data.get("serial_number")
             manufacturer = self._main_device_data.get("manufacturer_name")
 
@@ -284,9 +335,13 @@ class HACoordinator(DataUpdateCoordinator):
 
         return data
 
+<<<<<<< HEAD
     async def get_debug_data(self) -> dict:
         await self._api.update_full()
 
+=======
+    def get_debug_data(self) -> dict:
+>>>>>>> 752dd55 (Latest changes)
         data = {
             "rawData": self._api.raw_data,
             "devicesData": self._api.data,
@@ -295,6 +350,12 @@ class HACoordinator(DataUpdateCoordinator):
 
         return data
 
+<<<<<<< HEAD
+=======
+    def get_devices(self) -> dict[str, DeviceInfo]:
+        return self._devices
+
+>>>>>>> 752dd55 (Latest changes)
     async def _async_update_data(self):
         try:
             await self._api.update()

@@ -4,7 +4,11 @@
       "already_configured": "Integracja drukarki HP ({name}) ju\u017c skonfigurowana"
     },
     "error": {
+<<<<<<< HEAD
       "error_400": "Nieprawid\u0142owe szczeg\u00f3\u0142y serwera, spr\u00f3buj r\u0119cznie uzyska\u0107 dost\u0119p do `http: // {ip} // devmgmt/productStatusdyn.xml` (zamie\u0144 symbol zast\u0119pczy na IP lub nazwa hosta), je\u015bli jest dost\u0119pny, zg\u0142o\u015b problem z dziennikami",
+=======
+      "error_400": "Nieprawid\u0142owe szczeg\u00f3\u0142y serwera, spr\u00f3buj r\u0119cznie uzyska\u0107 dost\u0119p do `http://{IP}//DevMgmt/ProductStatusDyn.xml` (zamie\u0144 symbol zast\u0119pczy na IP lub nazwa hosta), je\u015bli jest dost\u0119pny, zg\u0142o\u015b problem z dziennikami",
+>>>>>>> 752dd55 (Latest changes)
       "error_404": "Nieobs\u0142ugiwany API"
     },
     "step": {
@@ -52,8 +56,27 @@
         "state": {
           "ink": "Atrament",
           "inkcartridge": "Atrament",
+<<<<<<< HEAD
           "printhead": "Printhead",
           "toner": "Toner"
+=======
+          "inktank": "Zbiornik atramentowy",
+          "printhead": "Printhead",
+          "toner": "Toner",
+          "tonercartridge": "Toner"
+        }
+      },
+      "device_status": {
+        "name": "Status",
+        "state": {
+          "canceljob": "Anulowanie pracy",
+          "copying": "Biurowy",
+          "inpowersave": "Bezczynny",
+          "off": "Wy\u0142\u0105czony",
+          "processing": "Druk",
+          "ready": "NA",
+          "scanprocessing": "\u0141\u00f3w"
+>>>>>>> 752dd55 (Latest changes)
         }
       },
       "duplex_sheets": {
@@ -106,7 +129,11 @@
   "options": {
     "error": {
       "already_configured": "Integracja drukarki HP ({name}) ju\u017c skonfigurowana",
+<<<<<<< HEAD
       "error_400": "Nieprawid\u0142owe szczeg\u00f3\u0142y serwera, spr\u00f3buj r\u0119cznie uzyska\u0107 dost\u0119p do `http: // {ip} // devmgmt/productStatusdyn.xml` (zamie\u0144 symbol zast\u0119pczy na IP lub nazwa hosta), je\u015bli jest dost\u0119pny, zg\u0142o\u015b problem z dziennikami",
+=======
+      "error_400": "Nieprawid\u0142owe szczeg\u00f3\u0142y serwera, spr\u00f3buj r\u0119cznie uzyska\u0107 dost\u0119p do `http://{IP}//DevMgmt/ProductStatusDyn.xml` (zamie\u0144 symbol zast\u0119pczy na IP lub nazwa hosta), je\u015bli jest dost\u0119pny, zg\u0142o\u015b problem z dziennikami",
+>>>>>>> 752dd55 (Latest changes)
       "error_404": "Nieobs\u0142ugiwany API"
     },
     "step": {

@@ -17,6 +17,7 @@ NOT_AVAILABLE = "N/A"
 
 PRINTER_STATUS = {
     "ready": "On",
+<<<<<<< HEAD
     "scanProcessing": "Scanning",
     "copying": "Copying",
     "processing": "Printing",
@@ -25,6 +26,18 @@ PRINTER_STATUS = {
     "": "Off",
 }
 
+=======
+    "scanprocessing": "Scanning",
+    "copying": "Copying",
+    "processing": "Printing",
+    "canceljob": "Cancelling Job",
+    "inpowersave": "Idle",
+    "off": "Off",
+}
+
+PRINTER_MAIN_DEVICE = "Main"
+
+>>>>>>> 752dd55 (Latest changes)
 IGNORED_KEYS = ["@schemaLocation", "Version"]
 
 SIGNAL_HA_DEVICE_CREATED = f"signal_{DOMAIN}_device_created"
@@ -32,10 +45,16 @@ SIGNAL_HA_DEVICE_DISCOVERED = f"signal_{DOMAIN}_device_discovered"
 CONFIGURATION_FILE = f"{DOMAIN}.config.json"
 LEGACY_KEY_FILE = f"{DOMAIN}.key"
 
+<<<<<<< HEAD
 UPDATE_API_INTERVAL = timedelta(minutes=5)
 
 DEFAULT_ENTRY_ID = "config"
 CONF_UPDATE_INTERVAL = "update_interval"
+=======
+UPDATE_API_INTERVAL = timedelta(seconds=1)
+
+DEFAULT_ENTRY_ID = "config"
+>>>>>>> 752dd55 (Latest changes)
 CONF_TITLE = "title"
 
 DEFAULT_PORT = 80
@@ -46,3 +65,25 @@ UNIT_OF_MEASUREMENT_PAGES = "pages"
 UNIT_OF_MEASUREMENT_REFILLS = "refills"
 
 NUMERIC_UNITS_OF_MEASUREMENT = [UNIT_OF_MEASUREMENT_PAGES, UNIT_OF_MEASUREMENT_REFILLS]
+<<<<<<< HEAD
+=======
+
+MODEL_PROPERTY = "make_and_model"
+
+PRODUCT_STATUS_ENDPOINT = "/DevMgmt/ProductStatusDyn.xml"
+PRODUCT_MAIN_ENDPOINT = "/DevMgmt/ProductConfigDyn.xml"
+
+PRODUCT_STATUS_OFFLINE_PAYLOAD = {
+    "ProductStatusDyn": {"Status": [{"StatusCategory": "off"}]}
+}
+
+DURATION_UNITS = {
+    "s": "seconds",
+    "m": "minutes",
+    "h": "hours",
+    "d": "days",
+    "w": "weeks",
+}
+
+DEFAULT_INTERVAL = "5m"
+>>>>>>> 752dd55 (Latest changes)

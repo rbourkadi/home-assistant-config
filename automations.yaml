@@ -193,19 +193,6 @@
     target:
       entity_id: button.ron_pc_shutdown
   mode: single
-- id: '1667125929662'
-  alias: Scales Battery Alert
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.aria_air_battery
-    to: Low
-  condition: []
-  action:
-  - service: notify.mobile_app_ron_s_phone
-    data:
-      message: Aria Air Scale Battery Low
-  mode: single
 - id: '1667139929911'
   alias: ZHA - IKEA five button remote for lights
   description: ''
@@ -239,6 +226,9 @@
   alias: Sync - Living Room Lights
   description: ''
   trigger:
+  - platform: state
+    entity_id:
+    - light.livingroom_tvtreelights
   - platform: state
     entity_id: light.livingroom_tvtreelights
   condition:
@@ -306,4 +296,24 @@
     target:
       entity_id:
       - light.living_room_tv_led_strip
+  mode: single
+- id: '1719431517815'
+  alias: Balcony Plants need watering
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.callisia_repens_soil_moisture
+    below: number.callisia_repens_min_soil_moisture
+  condition:
+  - condition: sun
+    after: sunset
+  - condition: time
+    before: '23:00:00'
+  - condition: template
+    value_template: '{{ now().date() != state_attr(''automation.balcony_plants'',
+      ''last_triggered'').date() }}'
+  action:
+  - service: notify.mobile_app_ron_s_phone
+    data:
+      message: Balcony plants need watering
   mode: single

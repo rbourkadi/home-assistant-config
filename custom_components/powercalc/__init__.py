@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import random
+import time
 
 import homeassistant.helpers.config_validation as cv
 import homeassistant.helpers.entity_registry as er
@@ -244,7 +246,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     setup_domain_groups(hass, domain_config)
     setup_standby_group(hass, domain_config)
 
+<<<<<<< HEAD
     await repair_none_config_entries_issue(hass)
+=======
+    try:
+        await repair_none_config_entries_issue(hass)
+    except Exception as e:  # noqa: BLE001  # pragma: no cover
+        _LOGGER.error("problem while cleaning up None entities", exc_info=e)  # pragma: no cover
+>>>>>>> 752dd55 (Latest changes)
 
     return True
 
@@ -338,29 +347,38 @@ async def setup_yaml_sensors(
 
     async def _load_secondary_sensors(_: None) -> None:
         """Load secondary sensors after primary sensors."""
-        await asyncio.gather(*(
-            hass.async_create_task(async_load_platform(
-                hass,
-                Platform.SENSOR,
-                DOMAIN,
-                sensor_config,
-                config,
-            ))
-            for sensor_config in secondary_sensors
-        ))
+        await asyncio.gather(
+            *(
+                hass.async_create_task(
+                    async_load_platform(
+                        hass,
+                        Platform.SENSOR,
+                        DOMAIN,
+                        sensor_config,
+                        config,
+                    ),
+                )
+                for sensor_config in secondary_sensors
+            ),
+        )
 
     hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, _load_secondary_sensors)
 
-    await asyncio.gather(*(
-        hass.async_create_task(async_load_platform(
-            hass,
-            Platform.SENSOR,
-            DOMAIN,
-            sensor_config,
-            config,
-        ))
-        for sensor_config in primary_sensors
-    ))
+    await asyncio.gather(
+        *(
+            hass.async_create_task(
+                async_load_platform(
+                    hass,
+                    Platform.SENSOR,
+                    DOMAIN,
+                    sensor_config,
+                    config,
+                ),
+            )
+            for sensor_config in primary_sensors
+        ),
+    )
+
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -421,11 +439,7 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
     version = config_entry.version
     if version == 1:
         data = {**config_entry.data}
-        if (
-            CONF_FIXED in data
-            and CONF_POWER in data[CONF_FIXED]
-            and CONF_POWER_TEMPLATE in data[CONF_FIXED]
-        ):
+        if CONF_FIXED in data and CONF_POWER in data[CONF_FIXED] and CONF_POWER_TEMPLATE in data[CONF_FIXED]:
             data[CONF_FIXED].pop(CONF_POWER, None)
         hass.config_entries.async_update_entry(config_entry, data=data, version=2)
 
@@ -447,7 +461,17 @@ async def repair_none_config_entries_issue(hass: HomeAssistant) -> None:
         entities = entity_registry.entities.get_entries_for_config_entry_id(entry.entry_id)
         for entity in entities:
             entity_registry.async_remove(entity.entity_id)
+<<<<<<< HEAD
         await hass.config_entries.async_remove(entry.entry_id)
+=======
+        try:
+            unique_id = f"{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
+            object.__setattr__(entry, "unique_id", unique_id)
+            hass.config_entries._entries._index_entry(entry)  # noqa
+            await hass.config_entries.async_remove(entry.entry_id)
+        except Exception as e:  # noqa: BLE001  # pragma: no cover
+            _LOGGER.error("problem while cleaning up None entities", exc_info=e)  # pragma: no cover
+>>>>>>> 752dd55 (Latest changes)
 
 
 def _notify_message(

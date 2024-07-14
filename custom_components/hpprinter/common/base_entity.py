@@ -115,8 +115,16 @@ class BaseEntity(CoordinatorEntity):
             entity_description, device_info
         )
 
+<<<<<<< HEAD
         unique_id_parts = [
             DOMAIN,
+=======
+        hostname = coordinator.config_manager.config_data.hostname
+
+        unique_id_parts = [
+            DOMAIN,
+            hostname,
+>>>>>>> 752dd55 (Latest changes)
             device_key,
             entity_description.platform,
             entity_description.key,

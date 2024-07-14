@@ -47,7 +47,13 @@
           "ink": "Ink",
           "inkcartridge": "Ink",
           "printhead": "Printhead",
+<<<<<<< HEAD
           "toner": "Toner"
+=======
+          "toner": "Toner",
+          "tonercartridge": "Toner",
+          "inktank": "Ink Tank"
+>>>>>>> 752dd55 (Latest changes)
         }
       },
       "estimated_pages_remaining": {
@@ -100,6 +106,21 @@
       },
       "scan_images": {
         "name": "Total pages"
+<<<<<<< HEAD
+=======
+      },
+      "device_status": {
+        "name": "Status",
+        "state": {
+          "ready": "On",
+          "scanprocessing": "Scanning",
+          "copying": "Copying",
+          "processing": "Printing",
+          "canceljob": "Cancelling Job",
+          "inpowersave": "Idle",
+          "off": "Off"
+        }
+>>>>>>> 752dd55 (Latest changes)
       }
     }
   },

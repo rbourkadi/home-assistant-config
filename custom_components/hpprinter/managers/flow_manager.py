@@ -9,9 +9,20 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowHandler
 
+<<<<<<< HEAD
 from ..common.consts import DATA_KEYS, DEFAULT_NAME
 from ..models.config_data import ConfigData
 from ..models.exceptions import IntegrationAPIError, IntegrationParameterError
+=======
+from ..common.consts import (
+    DATA_KEYS,
+    DEFAULT_NAME,
+    MODEL_PROPERTY,
+    PRINTER_MAIN_DEVICE,
+    PRODUCT_MAIN_ENDPOINT,
+)
+from ..models.config_data import ConfigData
+>>>>>>> 752dd55 (Latest changes)
 from .ha_config_manager import HAConfigManager
 from .rest_api import RestAPIv2
 
@@ -58,6 +69,7 @@ class IntegrationFlowManager:
 
                 api = RestAPIv2(self._hass, self._config_manager)
 
+<<<<<<< HEAD
                 await api.initialize(True)
 
                 _LOGGER.debug("User inputs are valid")
@@ -81,6 +93,37 @@ class IntegrationFlowManager:
                 form_errors = {"base": "error_404"}
 
                 _LOGGER.warning(f"Failed to setup integration, Error: {iapiex}")
+=======
+                await api.initialize()
+
+                if api.is_online:
+                    _LOGGER.debug("User inputs are valid")
+
+                    await api.update([PRODUCT_MAIN_ENDPOINT])
+
+                    main_device = api.data.get(PRINTER_MAIN_DEVICE, {})
+                    model = main_device.get(MODEL_PROPERTY, DEFAULT_NAME)
+                    title = f"{model} ({api.config_data.hostname})"
+
+                    if self._entry is None:
+                        data = copy(user_input)
+
+                    else:
+                        data = await self.remap_entry_data(user_input)
+                        title = self._entry.title
+
+                    return self._flow_handler.async_create_entry(title=title, data=data)
+
+                else:
+                    form_errors = {"base": "error_404"}
+
+                    _LOGGER.warning("Failed to setup integration")
+
+            except Exception as ex:
+                form_errors = {"base": "error_400"}
+
+                _LOGGER.error(f"Failed to setup integration, Error: {ex}")
+>>>>>>> 752dd55 (Latest changes)
 
         schema = ConfigData.default_schema(user_input)
 

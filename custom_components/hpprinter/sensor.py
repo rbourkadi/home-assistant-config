@@ -37,6 +37,10 @@ class HASensorEntity(BaseEntity, SensorEntity):
     ):
         super().__init__(entity_description, coordinator, device_key)
 
+<<<<<<< HEAD
+=======
+        self._attr_state_class = entity_description.state_class
+>>>>>>> 752dd55 (Latest changes)
         self._attr_device_class = entity_description.device_class
         self._attr_native_unit_of_measurement = (
             entity_description.native_unit_of_measurement

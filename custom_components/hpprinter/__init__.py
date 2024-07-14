@@ -2,7 +2,11 @@ import logging
 import sys
 
 from homeassistant.config_entries import ConfigEntry
+<<<<<<< HEAD
 from homeassistant.const import EVENT_HOMEASSISTANT_START, EVENT_HOMEASSISTANT_STOP
+=======
+from homeassistant.const import EVENT_HOMEASSISTANT_START
+>>>>>>> 752dd55 (Latest changes)
 from homeassistant.core import HomeAssistant
 
 from .common.consts import DEFAULT_NAME, DOMAIN
@@ -41,10 +45,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     EVENT_HOMEASSISTANT_START, coordinator.on_home_assistant_start
                 )
 
+<<<<<<< HEAD
                 hass.bus.async_listen_once(
                     EVENT_HOMEASSISTANT_STOP, coordinator.on_home_assistant_stop
                 )
 
+=======
+>>>>>>> 752dd55 (Latest changes)
             _LOGGER.info("Finished loading integration")
 
         initialized = is_initialized
