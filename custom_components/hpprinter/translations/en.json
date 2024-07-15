@@ -52,10 +52,6 @@
         "state": {
           "ink": "Ink",
           "inkcartridge": "Ink",
-<<<<<<< HEAD
-          "printhead": "Printhead",
-          "toner": "Toner"
-=======
           "inktank": "Ink Tank",
           "printhead": "Printhead",
           "toner": "Toner",
@@ -72,7 +68,6 @@
           "processing": "Printing",
           "ready": "On",
           "scanprocessing": "Scanning"
->>>>>>> 752dd55 (Latest changes)
         }
       },
       "duplex_sheets": {

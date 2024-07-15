@@ -4,11 +4,7 @@
       "already_configured": "HP -printerintegration ({navn}) allerede konfigureret"
     },
     "error": {
-<<<<<<< HEAD
-      "error_400": "Ugyldigt serveroplysninger, pr\u00f8v manuelt adgang til `http: // {ip} // devmgmt/produktstatusdyn.xml` (udskift pladsholder med IP eller v\u00e6rtsnavn), hvis det er tilg\u00e6ngeligt, skal du rapportere problemet med logfiler",
-=======
       "error_400": "Ugyldigt serveroplysninger, pr\u00f8v manuelt adgang til `http://{IP}//DevMgmt/ProductStatusDyn.xml` (udskift pladsholder med IP eller v\u00e6rtsnavn), hvis det er tilg\u00e6ngeligt, skal du rapportere problemet med logfiler",
->>>>>>> 752dd55 (Latest changes)
       "error_404": "Ikke -underst\u00f8ttet API"
     },
     "step": {
@@ -56,10 +52,6 @@
         "state": {
           "ink": "Bl\u00e6k",
           "inkcartridge": "Bl\u00e6k",
-<<<<<<< HEAD
-          "printhead": "Printhead",
-          "toner": "Toner"
-=======
           "inktank": "Bl\u00e6kbeholder",
           "printhead": "Printhead",
           "toner": "Toner",
@@ -76,7 +68,6 @@
           "processing": "Trykning",
           "ready": "P\u00e5",
           "scanprocessing": "Scanning"
->>>>>>> 752dd55 (Latest changes)
         }
       },
       "duplex_sheets": {
@@ -129,11 +120,7 @@
   "options": {
     "error": {
       "already_configured": "HP -printerintegration ({navn}) allerede konfigureret",
-<<<<<<< HEAD
-      "error_400": "Ugyldigt serveroplysninger, pr\u00f8v manuelt adgang til `http: // {ip} // devmgmt/produktstatusdyn.xml` (udskift pladsholder med IP eller v\u00e6rtsnavn), hvis det er tilg\u00e6ngeligt, skal du rapportere problemet med logfiler",
-=======
       "error_400": "Ugyldigt serveroplysninger, pr\u00f8v manuelt adgang til `http://{IP}//DevMgmt/ProductStatusDyn.xml` (udskift pladsholder med IP eller v\u00e6rtsnavn), hvis det er tilg\u00e6ngeligt, skal du rapportere problemet med logfiler",
->>>>>>> 752dd55 (Latest changes)
       "error_404": "Ikke -underst\u00f8ttet API"
     },
     "step": {

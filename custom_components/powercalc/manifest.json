@@ -22,9 +22,5 @@
     "requirements": [
         "numpy>=1.21.1"
     ],
-<<<<<<< HEAD
-    "version": "v1.12.7"
-=======
-    "version": "v1.13.2"
->>>>>>> 752dd55 (Latest changes)
+    "version": "v1.13.3"
 }

@@ -246,14 +246,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     setup_domain_groups(hass, domain_config)
     setup_standby_group(hass, domain_config)
 
-<<<<<<< HEAD
-    await repair_none_config_entries_issue(hass)
-=======
     try:
         await repair_none_config_entries_issue(hass)
     except Exception as e:  # noqa: BLE001  # pragma: no cover
         _LOGGER.error("problem while cleaning up None entities", exc_info=e)  # pragma: no cover
->>>>>>> 752dd55 (Latest changes)
 
     return True
 
@@ -380,7 +376,6 @@ async def setup_yaml_sensors(
     )
 
 
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Powercalc integration from a config entry."""
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
@@ -461,9 +456,6 @@ async def repair_none_config_entries_issue(hass: HomeAssistant) -> None:
         entities = entity_registry.entities.get_entries_for_config_entry_id(entry.entry_id)
         for entity in entities:
             entity_registry.async_remove(entity.entity_id)
-<<<<<<< HEAD
-        await hass.config_entries.async_remove(entry.entry_id)
-=======
         try:
             unique_id = f"{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
             object.__setattr__(entry, "unique_id", unique_id)
@@ -471,7 +463,6 @@ async def repair_none_config_entries_issue(hass: HomeAssistant) -> None:
             await hass.config_entries.async_remove(entry.entry_id)
         except Exception as e:  # noqa: BLE001  # pragma: no cover
             _LOGGER.error("problem while cleaning up None entities", exc_info=e)  # pragma: no cover
->>>>>>> 752dd55 (Latest changes)
 
 
 def _notify_message(

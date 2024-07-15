@@ -1,37 +1,21 @@
 {
   "config": {
     "abort": {
-<<<<<<< HEAD
-      "already_configured": "HP -Druckerintegration ({Name}) bereits konfiguriert"
-    },
-    "error": {
-      "error_400": "Ung\u00fcltige Serverdetails, bitte versuchen Sie manuell auf `http: // {ip} // devmgmt/productStatusdyn.xml` (Ersetzen Sie Platzhalter mit IP oder Hostname).",
-=======
       "already_configured": "HP -Druckerintegration ({name}) bereits konfiguriert"
     },
     "error": {
       "error_400": "Ung\u00fcltige Serverdetails, bitte versuchen Sie manuell auf `http://{IP}//DevMgmt/ProductStatusDyn.xml` (Ersetzen Sie den Platzhalter mit der IP oder dem Hostname).",
->>>>>>> 752dd55 (Latest changes)
       "error_404": "Nicht unterst\u00fctzte API"
     },
     "step": {
       "user": {
         "data": {
-<<<<<<< HEAD
-          "host": "Gastgeber",
-          "name": "Name",
-          "port": "Port-Nummer",
-          "ssl": "Ist SSL"
-        },
-        "title": "Richten Sie den HP -Drucker ein"
-=======
           "host": "Host",
           "name": "Name",
           "port": "Port-Nummer",
           "ssl": "SSL nutzen"
         },
         "title": "Richten Sie den HP-Drucker ein"
->>>>>>> 752dd55 (Latest changes)
       }
     }
   },
@@ -44,33 +28,14 @@
         "name": "Status"
       },
       "hardware_config_is_connected": {
-<<<<<<< HEAD
-        "name": "In Verbindung gebracht"
-      },
-      "registration_state": {
-        "name": "ePrint Eingetragen"
-=======
         "name": "Verbunden"
       },
       "registration_state": {
         "name": "ePrint Registriert"
->>>>>>> 752dd55 (Latest changes)
       }
     },
     "sensor": {
       "adf_images": {
-<<<<<<< HEAD
-        "name": "Gesamtseiten von ADF"
-      },
-      "color_impressions": {
-        "name": "Gesamtfarbseiten"
-      },
-      "consumable_percentage_level_remaining": {
-        "name": "Ebene"
-      },
-      "consumable_station": {
-        "name": "Bahnhof"
-=======
         "name": "Gesamtseiten ADF"
       },
       "color_impressions": {
@@ -81,30 +46,12 @@
       },
       "consumable_station": {
         "name": "Station"
->>>>>>> 752dd55 (Latest changes)
       },
       "consumable_type_enum": {
         "name": "Typ",
         "state": {
           "ink": "Tinte",
           "inkcartridge": "Tinte",
-<<<<<<< HEAD
-          "printhead": "Druckkopf",
-          "toner": "Toner"
-        }
-      },
-      "duplex_sheets": {
-        "name": "Gesamt zweiseitige Seiten"
-      },
-      "estimated_pages_remaining": {
-        "name": "\u00dcbrig"
-      },
-      "flatbed_images": {
-        "name": "Gesamtseiten aus Scannerglas"
-      },
-      "hardware_config_device_connectivity_port_type": {
-        "name": "Port -Typ"
-=======
           "inktank": "Tintentank",
           "printhead": "Druckkopf",
           "toner": "Toner",
@@ -134,17 +81,12 @@
       },
       "hardware_config_device_connectivity_port_type": {
         "name": "Port-Typ"
->>>>>>> 752dd55 (Latest changes)
       },
       "installation_date": {
         "name": "Installationsdatum"
       },
       "jam_events": {
-<<<<<<< HEAD
-        "name": "Gesamtmarmelade"
-=======
         "name": "Gesamt Papierstaus"
->>>>>>> 752dd55 (Latest changes)
       },
       "manufacture_at": {
         "name": "Herstellungsdatum"
@@ -153,27 +95,6 @@
         "name": "Total Miss Picks"
       },
       "monochrome_impressions": {
-<<<<<<< HEAD
-        "name": "Gesamtschwarz-Wei\u00df-Seiten"
-      },
-      "refilled_count_counterfeit_refilled_count": {
-        "name": "Gef\u00e4lscht nachgedacht"
-      },
-      "refilled_count_genuine_refilled_count": {
-        "name": "Echt nachgedacht"
-      },
-      "scan_images": {
-        "name": "Alle Seiten"
-      },
-      "simplex_sheets": {
-        "name": "Gesamt einseitige Seiten"
-      },
-      "total_impressions": {
-        "name": "Alle Seiten"
-      },
-      "warranty_expiration_date": {
-        "name": "Verfallsdatum"
-=======
         "name": "Gesamtseiten Schwarz-Wei\u00df"
       },
       "refilled_count_counterfeit_refilled_count": {
@@ -193,34 +114,18 @@
       },
       "warranty_expiration_date": {
         "name": "Ablaufsdatum"
->>>>>>> 752dd55 (Latest changes)
       }
     }
   },
   "options": {
     "error": {
-<<<<<<< HEAD
-      "already_configured": "HP -Druckerintegration ({Name}) bereits konfiguriert",
-      "error_400": "Ung\u00fcltige Serverdetails, bitte versuchen Sie manuell auf `http: // {ip} // devmgmt/productStatusdyn.xml` (Ersetzen Sie Platzhalter mit IP oder Hostname).",
-=======
       "already_configured": "HP-Druckerintegration ({name}) bereits konfiguriert",
       "error_400": "Ung\u00fcltige Serverdetails, bitte versuchen Sie manuell auf `http://{IP}//DevMgmt/ProductStatusDyn.xml` zuzugreifen (ersetzen Sie den Platzhalter mit der IP oder dem Hostname).",
->>>>>>> 752dd55 (Latest changes)
       "error_404": "Nicht unterst\u00fctzte API"
     },
     "step": {
       "hp_printer_additional_settings": {
         "data": {
-<<<<<<< HEAD
-          "host": "Gastgeber",
-          "log_level": "Protokollebene",
-          "name": "Name",
-          "store_data": "Sollte die Antworten speichern?",
-          "update_interval": "Aktualisierungsintervall (Sekunden)"
-        },
-        "description": "Definieren Sie zus\u00e4tzliche Einstellungen f\u00fcr die HP -Druckerintegration",
-        "title": "Optionen f\u00fcr HP -Drucker."
-=======
           "host": "Host",
           "log_level": "Protokollebene",
           "name": "Name",
@@ -229,25 +134,16 @@
         },
         "description": "Definieren Sie zus\u00e4tzliche Einstellungen f\u00fcr die HP-Druckerintegration",
         "title": "Optionen f\u00fcr HP-Drucker."
->>>>>>> 752dd55 (Latest changes)
       },
       "init": {
         "data": {
           "host": "Hostname oder IP",
           "port": "Port-Nummer",
-<<<<<<< HEAD
-          "ssl": "Ist SSL",
-          "update_interval": "Aktualisierungsintervall (Sekunden)"
-        },
-        "description": "Definieren Sie zus\u00e4tzliche Einstellungen f\u00fcr die HP -Druckerintegration",
-        "title": "Optionen f\u00fcr HP -Drucker."
-=======
           "ssl": "SSL nutzen",
           "update_interval": "Aktualisierungsintervall (Sekunden)"
         },
         "description": "Definieren Sie zus\u00e4tzliche Einstellungen f\u00fcr die HP-Druckerintegration",
         "title": "Optionen f\u00fcr HP-Drucker."
->>>>>>> 752dd55 (Latest changes)
       }
     }
   }

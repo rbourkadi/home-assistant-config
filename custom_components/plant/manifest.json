@@ -16,9 +16,5 @@
   "requirements": [
     "async-timeout>=4.0.2"
   ],
-<<<<<<< HEAD
-  "version": "2024.6.0"
-=======
   "version": "2024.7.0"
->>>>>>> 752dd55 (Latest changes)
 }
