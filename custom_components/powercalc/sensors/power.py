@@ -461,7 +461,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         template: Template | str = self._sensor_config.get(CONF_CALCULATION_ENABLED_CONDITION)  # type: ignore
         if isinstance(template, str):
             template = template.replace("[[entity]]", self.source_entity)
-            template = Template(template)
+            template = Template(template, self.hass)
 
         self._calculation_enabled_condition = template
 
@@ -522,7 +522,11 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
     async def calculate_power(self, state: State) -> Decimal | None:
         """Calculate power consumption using configured strategy."""
         entity_state = state
-        if state.entity_id != self._source_entity.entity_id and (entity_state := self.hass.states.get(self._source_entity.entity_id)) is None:
+        if (
+            self._calculation_strategy != CalculationStrategy.MULTI_SWITCH
+            and state.entity_id != self._source_entity.entity_id
+            and (entity_state := self.hass.states.get(self._source_entity.entity_id)) is None
+        ):
             return None
 
         unavailable_power = self._sensor_config.get(CONF_UNAVAILABLE_POWER)
@@ -612,7 +616,6 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         if not template:
             return True
 
-        template.hass = self.hass
         return bool(template.async_render())
 
     @property

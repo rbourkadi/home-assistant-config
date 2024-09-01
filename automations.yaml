@@ -307,13 +307,15 @@
   condition:
   - condition: sun
     after: sunset
+    enabled: false
   - condition: time
     before: '23:00:00'
+    enabled: false
   - condition: template
     value_template: '{{ now().date() != state_attr(''automation.balcony_plants'',
       ''last_triggered'').date() }}'
   action:
-  - service: notify.mobile_app_ron_s_phone
-    data:
+  - data:
       message: Balcony plants need watering
+    action: notify.mobile_app_ron_s_phone
   mode: single
