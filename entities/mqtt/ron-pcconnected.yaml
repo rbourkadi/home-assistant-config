@@ -3,7 +3,7 @@
 #
 #
 binary_sensor:
-  - state_topic: "homeassistant/sensor/RON_PC/availability"
+  - state_topic: "homeassistant/sensor/RON-PC/availability"
     name: "Ron's Computer - Connected"
     value_template: "{{ value }}"
     payload_on: "online"
