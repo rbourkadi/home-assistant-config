@@ -229,48 +229,51 @@
   - platform: state
     entity_id:
     - light.livingroom_tvtreelights
-  - platform: state
-    entity_id: light.livingroom_tvtreelights
   condition:
   - condition: template
     value_template: '{{ trigger.to_state.state in [''on'', ''off''] }}'
   action:
-  - service: light.turn_{{ trigger.to_state.state }}
-    target:
+  - target:
       entity_id:
       - light.balcony_planterlights
       - light.livingroom_sidetablelamp
       - light.living_room_led_strips
+      - light.living_room_tv_led_strip
+    action: light.turn_{{ trigger.to_state.state }}
 - id: '1698578180957'
   alias: Turn on TV LED Strip when TV is turned on
   description: ''
   trigger:
-  - platform: device
-    device_id: 7639e466da454a2ebb961fb7a841407d
-    domain: media_player
-    entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
-    type: turned_on
+  - platform: state
+    entity_id:
+    - media_player.living_room_tv
+    to: 'on'
   condition:
   - condition: sun
     after: sunset
+    enabled: false
   action:
-  - service: scene.turn_on
-    target:
+  - target:
       entity_id: scene.tv_led_scene
     metadata: {}
+    action: scene.turn_on
+  - type: turn_on
+    device_id: df5ff1e6d312c625dc5e50cba19a6887
+    entity_id: eab4279243b79148c2c7df79a1c2ebbd
+    domain: light
   mode: single
 - id: '1698578230341'
   alias: Turn off TV LED Strip when TV is turned off
   description: ''
   trigger:
-  - platform: device
-    device_id: 7639e466da454a2ebb961fb7a841407d
-    domain: media_player
-    entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
-    type: turned_off
+  - platform: state
+    entity_id:
+    - media_player.living_room_tv
+    to: 'off'
   condition:
   - condition: sun
     after: sunset
+    enabled: false
   action:
   - type: turn_off
     device_id: df5ff1e6d312c625dc5e50cba19a6887
@@ -281,21 +284,17 @@
   alias: Sync TV LED Strip Lights
   description: ''
   trigger:
-  - platform: state
-    entity_id: light.livingroom_tvtreelights
-  condition:
-  - condition: template
-    value_template: '{{ trigger.to_state.state in [''on'', ''off''] }}'
-  - condition: device
+  - platform: device
+    type: changed_states
     device_id: 7639e466da454a2ebb961fb7a841407d
-    domain: media_player
     entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
-    type: is_on
+    domain: media_player
+  condition: []
   action:
-  - service: light.turn_{{ trigger.to_state.state }}
-    target:
+  - target:
       entity_id:
       - light.living_room_tv_led_strip
+    action: light.turn_{{ trigger.to_state.state }}
   mode: single
 - id: '1719431517815'
   alias: Balcony Plants need watering
@@ -318,4 +317,22 @@
   - data:
       message: Balcony plants need watering
     action: notify.mobile_app_ron_s_phone
+  mode: single
+- id: '1726403326211'
+  alias: Reload smarthingstv integration
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: remote.living_room_tv
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: media_player.living_room_tv
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - target:
+      entity_id: media_player.living_room_tv
+    action: homeassistant.reload_config_entry
   mode: single
