@@ -238,7 +238,6 @@
       - light.balcony_planterlights
       - light.livingroom_sidetablelamp
       - light.living_room_led_strips
-      - light.living_room_tv_led_strip
     action: light.turn_{{ trigger.to_state.state }}
 - id: '1698578180957'
   alias: Turn on TV LED Strip when TV is turned on
@@ -251,7 +250,7 @@
   condition:
   - condition: sun
     after: sunset
-    enabled: false
+    enabled: true
   action:
   - target:
       entity_id: scene.tv_led_scene
@@ -273,7 +272,7 @@
   condition:
   - condition: sun
     after: sunset
-    enabled: false
+    enabled: true
   action:
   - type: turn_off
     device_id: df5ff1e6d312c625dc5e50cba19a6887
@@ -281,7 +280,7 @@
     domain: light
   mode: single
 - id: '1698579183992'
-  alias: Sync TV LED Strip Lights
+  alias: Sync - TV LED Strip Lights with TV
   description: ''
   trigger:
   - platform: device
@@ -289,7 +288,10 @@
     device_id: 7639e466da454a2ebb961fb7a841407d
     entity_id: 27bfebe19770faf2a37ac8fd5e9270cf
     domain: media_player
-  condition: []
+  condition:
+  - condition: sun
+    after: sunset
+    enabled: true
   action:
   - target:
       entity_id:
@@ -317,22 +319,4 @@
   - data:
       message: Balcony plants need watering
     action: notify.mobile_app_ron_s_phone
-  mode: single
-- id: '1726403326211'
-  alias: Reload smarthingstv integration
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: remote.living_room_tv
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: media_player.living_room_tv
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - target:
-      entity_id: media_player.living_room_tv
-    action: homeassistant.reload_config_entry
   mode: single
