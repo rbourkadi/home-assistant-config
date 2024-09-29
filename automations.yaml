@@ -320,3 +320,16 @@
       message: Balcony plants need watering
     action: notify.mobile_app_ron_s_phone
   mode: single
+- id: '1726868810326'
+  alias: Notification - Send Phone Reboot Reminder
+  description: If phone hasn't been rebooted in a week then send me a reminder
+  trigger:
+  - platform: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states(''sensor.ron_s_phone_last_reboot'')))
+      > 7 * 24 * 60 * 60 }}'
+  action:
+  - data:
+      title: Restart Reminder
+      message: Your phone has not been restarted in the last 7 days. Please restart
+        it.
+    action: notify.mobile_app_ron_s_phone
