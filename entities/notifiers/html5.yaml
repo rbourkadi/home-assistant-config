@@ -1,8 +1,0 @@
----
-#
-# https://www.home-assistant.io/integrations/notify/
-#
-platform: html5
-vapid_pub_key: !secret html5_vapid_pub_key
-vapid_prv_key: !secret html5_vapid_prv_key
-vapid_email: !secret html5_vapid_email
