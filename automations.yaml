@@ -300,22 +300,17 @@
   mode: single
 - id: '1719431517815'
   alias: Balcony Plants need watering
-  trigger:
-  - platform: numeric_state
-    entity_id:
-    - sensor.callisia_repens_soil_moisture
-    below: number.callisia_repens_min_soil_moisture
-  condition:
-  - condition: sun
-    after: sunset
-    enabled: false
-  - condition: time
-    before: '23:00:00'
-    enabled: false
+  triggers:
+  - entity_id: sensor.callisia_repens_soil_moisture
+    below: 30
+    trigger: numeric_state
+  conditions:
   - condition: template
-    value_template: '{{ now().date() != state_attr(''automation.balcony_plants'',
-      ''last_triggered'').date() }}'
-  action:
+    value_template: '{{ now().date() != state_attr(''automation.balcony_plants_need_watering'',
+      ''last_triggered'').date() }}
+
+      '
+  actions:
   - data:
       message: Balcony plants need watering
     action: notify.mobile_app_ron_s_phone
