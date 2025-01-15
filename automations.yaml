@@ -298,23 +298,6 @@
       - light.living_room_tv_led_strip
     action: light.turn_{{ trigger.to_state.state }}
   mode: single
-- id: '1719431517815'
-  alias: Balcony Plants need watering
-  triggers:
-  - entity_id: sensor.callisia_repens_soil_moisture
-    below: 30
-    trigger: numeric_state
-  conditions:
-  - condition: template
-    value_template: '{{ now().date() != state_attr(''automation.balcony_plants_need_watering'',
-      ''last_triggered'').date() }}
-
-      '
-  actions:
-  - data:
-      message: Balcony plants need watering
-    action: notify.mobile_app_ron_s_phone
-  mode: single
 - id: '1726868810326'
   alias: Notification - Send Phone Reboot Reminder
   description: If phone hasn't been rebooted in a week then send me a reminder
