@@ -53,8 +53,7 @@
             entity_id: device_tracker.ron_s_phone
             type: is_home
           then:
-          - service: notify.mobile_app_ron_s_phone
-            data:
+          - data:
               message: Washing Machine has finished!
               data:
                 persistent: true
@@ -62,6 +61,7 @@
                 actions:
                 - action: MACHINE_EMPTIED
                   title: It's done
+            action: notify.mobile_app_ron_s_phone
         - if:
           - condition: or
             conditions:
@@ -80,19 +80,19 @@
               - thu
               - fri
           then:
-          - service: notify.alexa_media
-            data:
+          - data:
               message: The washing machine is finished
               data:
                 type: announce
               target:
               - media_player.spare_room_echo_dot
-          - service: notify.ron_pc
-            data:
+            action: notify.alexa_media
+          - data:
               message: Notification Out-of-Hours
               title: Washing Machine
+            action: notify.ron_pc
           else: []
-      power_sensor: sensor.washingmachine_consumption
+      power_sensor: sensor.washing_machine_power
       finishing_threshold: 2
       starting_threshold: 3
       finishing_hysteresis: 2
@@ -116,42 +116,44 @@
 - id: '1657376733084'
   alias: Set - Washing Machine Status
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.washingmachine_consumption
+  triggers:
+  - entity_id:
+    - sensor.washing_machine_power
     id: stopped
     for:
       minutes: 1
     below: 2
-  - platform: numeric_state
-    entity_id: sensor.washingmachine_consumption
+    trigger: numeric_state
+  - entity_id:
+    - sensor.washing_machine_power
     for:
       hours: 0
       minutes: 1
       seconds: 0
     above: 2
     id: running
-  condition: []
-  action:
+    trigger: numeric_state
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id: stopped
       sequence:
-      - service: input_select.select_option
-        data:
+      - data:
           option: Stopped
         target:
           entity_id: input_select.washing_machine_status
+        action: input_select.select_option
     - conditions:
       - condition: trigger
         id: running
       sequence:
-      - service: input_select.select_option
-        data:
+      - data:
           option: Running
         target:
           entity_id: input_select.washing_machine_status
+        action: input_select.select_option
   mode: single
 - id: '1659196540190'
   alias: Notification - Notify Ronnie if he leaves home and computer is on

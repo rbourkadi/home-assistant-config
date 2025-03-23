@@ -4,17 +4,16 @@ import contextlib
 import json
 import logging
 from operator import attrgetter
-from typing import Any
+from typing import Any, Self
 from urllib.parse import urlparse
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 from homeassistant import config_entries, exceptions
-from homeassistant.components import ssdp
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow, FlowResult
-
+from homeassistant.helpers.service_info import ssdp
 from pyskyqremote.const import KNOWN_COUNTRIES, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -56,6 +55,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 2
     CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
+    host: str | None = None
 
     def __init__(self):
         """Initiliase the configuration flow."""
@@ -71,58 +71,33 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input:
-            if host_valid(user_input[CONF_HOST]):
-                host = user_input[CONF_HOST]
-                name = user_input[CONF_NAME]
-
-                try:
-                    await self._async_setuniqueid(host)
-                except CannotConnect:
-                    errors["base"] = "cannot_connect"
-                else:
-                    return self.async_create_entry(title=name, data=user_input)
-            else:
-                errors[CONF_HOST] = "invalid_host"
+            self.host = user_input[CONF_HOST]
+            errors = await self._async_validate_input(self.host)
+            if not errors:
+                return self.async_create_entry(
+                    title=user_input[CONF_NAME], data=user_input
+                )
 
         return self.async_show_form(
             step_id="user", data_schema=vol.Schema(DATA_SCHEMA), errors=errors
         )
 
-    async def _async_setuniqueid(self, host):
-        self._async_abort_entries_match({CONF_HOST: host})
-        remote = await self.hass.async_add_executor_job(SkyQRemote, host)
-        if not remote.device_setup:
-            raise CannotConnect()
-
-        if remote.device_type in UNSUPPORTED_DEVICES:
-            _LOGGER.warning(
-                "W0010 - Device type - %s - is not supported", remote.device_type
-            )
-
-        device_info = await self.hass.async_add_executor_job(
-            remote.get_device_information
-        )
-
-        await self.async_set_unique_id(
-            device_info.countryCode
-            + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
-        )
-        self._abort_if_unique_id_configured()
-
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle a discovered device."""
-        host = str(urlparse(discovery_info.ssdp_location).hostname)
-        _LOGGER.debug("D0020 - Discovered device: %s", host)
+        self.host = str(urlparse(discovery_info.ssdp_location).hostname)
+        _LOGGER.debug("D0020 - Discovered device: %s", self.host)
         try:
-            await self._async_setuniqueid(host)
+            await self._async_setuniqueid(self.host)
             name = discovery_info.ssdp_server
 
             context = self.context
-            context[CONF_HOST] = host
+            context[CONF_HOST] = self.host
             context[CONF_NAME] = name
             return await self.async_step_confirm()
         except CannotConnect:
-            _LOGGER.warning("W0020 - Failed to connect - Skipping Device: %s", host)
+            _LOGGER.warning(
+                "W0020 - Failed to connect - Skipping Device: %s", self.host
+            )
 
     async def async_step_confirm(
         self, user_input: dict[str, Any] | None = None
@@ -131,7 +106,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         context = self.context
         errors = {}
         name = context[CONF_NAME]
-        host = context[CONF_HOST]
+        self.host = context[CONF_HOST]
         devicetype = None
         try:
             devicetype = name.split("/")[0]
@@ -142,16 +117,16 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         placeholders = {
             CONF_NAME: name,
-            CONF_HOST: host,
+            CONF_HOST: self.host,
         }
         context["title_placeholders"] = placeholders
         if user_input is not None:
             try:
-                await self._async_setuniqueid(host)
+                await self._async_setuniqueid(self.host)
             except CannotConnect:
                 errors["base"] = "cannot_connect"
             else:
-                user_input = {CONF_HOST: host, CONF_NAME: title}
+                user_input = {CONF_HOST: self.host, CONF_NAME: title}
                 return self.async_create_entry(title=title, data=user_input)
 
         return self.async_show_form(
@@ -159,6 +134,68 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             description_placeholders=placeholders,
             errors=errors,
         )
+
+    async def async_step_reconfigure(self, user_input: dict[str, Any] | None = None):
+        """Add reconfigure step to allow to reconfigure a config entry."""
+        errors = {}
+        entry = self._get_reconfigure_entry()
+
+        if user_input is not None:
+            self.host = user_input[CONF_HOST]
+            errors = await self._async_validate_input(self.host, reconfigure=True)
+            if not errors:
+                return self.async_update_reload_and_abort(
+                    entry, data_updates=user_input
+                )
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONF_HOST, default=entry.data[CONF_HOST]): str,
+                }
+            ),
+            errors=errors,
+        )
+
+    def is_matching(self, other_flow: Self) -> bool:
+        """Return True if other_flow is matching this flow."""
+        return other_flow.host == self.host
+
+    async def _async_setuniqueid(self, host, reconfigure=False):
+        self._async_abort_entries_match({CONF_HOST: host})
+        remote = await self.hass.async_add_executor_job(SkyQRemote, host)
+        if not remote.device_setup:
+            raise CannotConnect()
+
+        if remote.device_type in UNSUPPORTED_DEVICES:
+            _LOGGER.warning(
+                "W0010 - Device type - %s - is not supported", remote.device_type
+            )
+
+        if not reconfigure:
+            device_info = await self.hass.async_add_executor_job(
+                remote.get_device_information
+            )
+
+            await self.async_set_unique_id(
+                device_info.countryCode
+                + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
+            )
+            self._abort_if_unique_id_configured()
+
+    async def _async_validate_input(self, host, reconfigure=False):
+        errors = {}
+        if host_valid(host):
+            try:
+                await self._async_setuniqueid(host, reconfigure)
+            except CannotConnect:
+                errors["base"] = "cannot_connect"
+
+        else:
+            errors[CONF_HOST] = "invalid_host"
+
+        return errors
 
 
 class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
@@ -204,7 +241,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._user_input = None
 
     async def async_step_init(
-        self, user_input=None  # pylint: disable=unused-argument
+        self,
+        user_input=None,  # pylint: disable=unused-argument
     ) -> FlowResult:
         """Set up the option flow."""
         if self._config_entry.entry_id not in self.hass.data[DOMAIN]:
@@ -364,9 +402,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         advanced_input[CONF_ADD_BACKUP] = self._add_backup
         return advanced_input
 
-    async def async_step_retry(
-        self, user_input=None
-    ):  # pylint: disable=unused-argument
+    async def async_step_retry(self, user_input=None):  # pylint: disable=unused-argument
         """Handle a failed connection."""
         errors = {"base": "cannot_connect"}
 

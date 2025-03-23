@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "This Sky Q box is already configured."
+      "already_configured": "This Sky Q box is already configured.",
+      "reconfigure_successful": "Re-configuration was successful"
     },
     "error": {
       "cannot_connect": "Failed to connect to host.",
@@ -66,6 +67,21 @@
       "turn_off": "Turn off {entity_name}",
       "select_source": "Select source for {entity_name}",
       "play_media": "Enter buttons on {entity_name}"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "schedule": {
+        "name": "Schedule",
+        "state": {
+          "none": "None",
+          "recording": "Recording",
+          "scheduled": "Scheduled"
+        }
+      },
+      "storage": {
+        "name": "Used Storage"
+      }
     }
   }
 }

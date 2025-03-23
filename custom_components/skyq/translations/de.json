@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Diese Sky Q-Box ist bereits konfiguriert."
+      "already_configured": "Diese Sky Q-Box ist bereits konfiguriert.",
+      "reconfigure_successful": "Die Neukonfiguration war erfolgreich"
     },
     "error": {
       "cannot_connect": "Verbindung zum Host fehlgeschlagen.",
@@ -67,6 +68,21 @@
       "turn_off": "Schalten Sie {entity_name} aus",
       "select_source": "Quelle für {entity_name} auswählen",
       "play_media": "Eingabetasten auf {entity_name}"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "schedule": {
+        "name": "Zeitplan",
+        "state": {
+          "none": "Keiner",
+          "recording": "Aufnahme",
+          "scheduled": "Geplant"
+        }
+      },
+      "storage": {
+        "name": "Gebrauchter Speicher"
+      }
     }
   }
 }

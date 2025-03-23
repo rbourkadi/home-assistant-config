@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Questa casella Sky Q è già configurata.."
+      "already_configured": "Questa casella Sky Q è già configurata.",
+      "reconfigure_successful": "La riconfigurazione ha avuto successo"
     },
     "error": {
       "cannot_connect": "Impossibile connettersi all'host.",
@@ -69,6 +70,21 @@
       "turn_off": "Spegnere {entity_name}",
       "select_source": "Seleziona la sorgente per {entity_name}",
       "play_media": "Inserisci i pulsanti su {entity_name}"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "schedule": {
+        "name": "Programma",
+        "state": {
+          "none": "Nessuno",
+          "recording": "Registrazione",
+          "scheduled": "Programmato"
+        }
+      },
+      "storage": {
+        "name": "Stoccaggio usato"
+      }
     }
   }
 }
