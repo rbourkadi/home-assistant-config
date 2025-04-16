@@ -1,15 +1,17 @@
+---
 substitutions:
   name: localbytes-plug-pm-68959f
   friendly_name: Localbytes Plug PM 68959f
 packages:
-  localbytes.plug-pm: github://LocalBytes/esphome-localbytes-plug/localbytes-plug-pm.yaml@main
+  localbytes.plug-pm: >
+    github://LocalBytes/esphome-localbytes-plug/localbytes-plug-pm.yaml@main
 esphome:
   name: ${name}
   name_add_mac_suffix: false
   friendly_name: ${friendly_name}
 api:
   encryption:
-    key: zGXTJKW/Gz7vtJhxGBAqHjGDXaQf06ZzRg0FiL5mqN0=
+    key: !secret encryption_key
 
 
 wifi:
